@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Category, Transaction } from '../types';
+import { CategoryIcon } from '../constants/icons';
 import { ESSENTIAL_PRESETS, PARTNER_PRESETS } from '../constants/categories';
-import { Plus, Search, Trash2, Heart, Dices, Cigarette, Flame, DollarSign, Filter, RefreshCw } from 'lucide-react';
+import { Plus, Search, Trash2, Heart, Dices, Cigarette, Flame, DollarSign, Filter, RefreshCw, Receipt } from 'lucide-react';
 
 interface MainColumnProps {
   categories: Category[];
@@ -85,7 +86,7 @@ export const MainColumn: React.FC<MainColumnProps> = ({
       date: new Date().toISOString().split('T')[0],
       note: 'Quick preset entry',
     });
-    onShowToast(`Added ${name} (৳${price}) ✓`);
+    onShowToast(`Added ${name} (৳${price}) `);
   };
 
   // Handle Partner Date Night Bundle (Combines treats + dinner + hangout)
@@ -99,7 +100,7 @@ export const MainColumn: React.FC<MainColumnProps> = ({
       date: new Date().toISOString().split('T')[0],
       note: 'Combined date night package',
     });
-    onShowToast(`Date Night Bundle added (৳${bundleAmount}) 💘 ✓`);
+    onShowToast(`Date Night Bundle added (৳${bundleAmount})  `);
   };
 
   // Handle Gaming Entry
@@ -116,7 +117,7 @@ export const MainColumn: React.FC<MainColumnProps> = ({
         date: new Date().toISOString().split('T')[0],
         note: `Loss entry: ${gamingNote}`,
       });
-      onShowToast(`Activity loss logged (৳${gamingAmount}) ✓`);
+      onShowToast(`Activity loss logged (৳${gamingAmount}) `);
     } else {
       onAddTransaction({
         type: 'income',
@@ -126,7 +127,7 @@ export const MainColumn: React.FC<MainColumnProps> = ({
         date: new Date().toISOString().split('T')[0],
         note: `Profit entry: ${gamingNote}`,
       });
-      onShowToast(`Activity profit logged (৳${gamingAmount}) 🎉 ✓`);
+      onShowToast(`Activity profit logged (৳${gamingAmount})  `);
     }
 
     setGamingAmount('');
@@ -148,100 +149,100 @@ export const MainColumn: React.FC<MainColumnProps> = ({
   const maxCategorySpent = Math.max(...categoryChartData.map((c) => c.spent), 1);
 
   return (
-    <main className="flex-1 h-full bg-[#F7F4EF] p-6 overflow-y-auto flex flex-col gap-6">
+    <main className="flex-1 h-full bg-[#09090B] p-6 overflow-y-auto flex flex-col gap-6">
       {/* 1. SUMMARY CARDS GRID (3 Columns x 2 Rows) */}
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {/* Card 1: Current Balance */}
-        <div className="relative bg-white p-4 rounded-2xl border border-[rgba(0,0,0,0.08)] shadow-xs hover:shadow-md transition-all group overflow-hidden">
-          <div className="w-full h-[3px] bg-[#1D9E75] absolute top-0 left-0" />
-          <span className="text-[10px] font-bold text-[#A8A090] tracking-widest uppercase">
+        <div className="relative bg-[#27272A] p-4 rounded-2xl border border-[rgba(255,255,255,0.08)] shadow-xs hover:shadow-md transition-all group overflow-hidden">
+          <div className="w-full h-[3px] bg-[#00E55F] absolute top-0 left-0" />
+          <span className="text-[10px] font-bold text-[#71717A] tracking-widest uppercase">
             Current Balance
           </span>
-          <div className="text-2xl font-bold font-serif-display text-[#1D9E75] mt-1">
+          <div className="text-2xl font-bold font-serif-display text-[#00E55F] mt-1">
             ৳{currentBalance.toLocaleString('en-BD')}
           </div>
-          <span className="text-xs text-[#6B6355] mt-1 block">Net Available Taka</span>
+          <span className="text-xs text-[#A1A1AA] mt-1 block">Net Available Taka</span>
           <span className="absolute bottom-2 right-3 text-3xl opacity-15 select-none pointer-events-none group-hover:scale-110 transition-transform">
-            💰
+            
           </span>
         </div>
 
         {/* Card 2: Total Spent */}
-        <div className="relative bg-white p-4 rounded-2xl border border-[rgba(0,0,0,0.08)] shadow-xs hover:shadow-md transition-all group overflow-hidden">
-          <div className="w-full h-[3px] bg-[#D85A30] absolute top-0 left-0" />
-          <span className="text-[10px] font-bold text-[#A8A090] tracking-widest uppercase">
+        <div className="relative bg-[#27272A] p-4 rounded-2xl border border-[rgba(255,255,255,0.08)] shadow-xs hover:shadow-md transition-all group overflow-hidden">
+          <div className="w-full h-[3px] bg-[#FF6B57] absolute top-0 left-0" />
+          <span className="text-[10px] font-bold text-[#71717A] tracking-widest uppercase">
             Total Spent
           </span>
-          <div className="text-2xl font-bold font-serif-display text-[#D85A30] mt-1">
+          <div className="text-2xl font-bold font-serif-display text-[#FF6B57] mt-1">
             ৳{totalExpense.toLocaleString('en-BD')}
           </div>
-          <span className="text-xs text-[#6B6355] mt-1 block">This month's expenses</span>
+          <span className="text-xs text-[#A1A1AA] mt-1 block">This month's expenses</span>
           <span className="absolute bottom-2 right-3 text-3xl opacity-15 select-none pointer-events-none group-hover:scale-110 transition-transform">
-            🧾
+            
           </span>
         </div>
 
         {/* Card 3: Saved / Remaining */}
-        <div className="relative bg-white p-4 rounded-2xl border border-[rgba(0,0,0,0.08)] shadow-xs hover:shadow-md transition-all group overflow-hidden">
-          <div className="w-full h-[3px] bg-[#534AB7] absolute top-0 left-0" />
-          <span className="text-[10px] font-bold text-[#A8A090] tracking-widest uppercase">
+        <div className="relative bg-[#27272A] p-4 rounded-2xl border border-[rgba(255,255,255,0.08)] shadow-xs hover:shadow-md transition-all group overflow-hidden">
+          <div className="w-full h-[3px] bg-[#8B7FF5] absolute top-0 left-0" />
+          <span className="text-[10px] font-bold text-[#71717A] tracking-widest uppercase">
             Saved / Remaining
           </span>
-          <div className="text-2xl font-bold font-serif-display text-[#534AB7] mt-1">
+          <div className="text-2xl font-bold font-serif-display text-[#8B7FF5] mt-1">
             ৳{savedRemaining.toLocaleString('en-BD')}
           </div>
-          <span className="text-xs text-[#6B6355] mt-1 block">Budget left to spend</span>
+          <span className="text-xs text-[#A1A1AA] mt-1 block">Budget left to spend</span>
           <span className="absolute bottom-2 right-3 text-3xl opacity-15 select-none pointer-events-none group-hover:scale-110 transition-transform">
-            🎯
+            
           </span>
         </div>
 
         {/* Card 4: Daily Essentials Spend */}
-        <div className="relative bg-white p-4 rounded-2xl border border-[rgba(0,0,0,0.08)] shadow-xs hover:shadow-md transition-all group overflow-hidden">
-          <div className="w-full h-[3px] bg-[#445566] absolute top-0 left-0" />
-          <span className="text-[10px] font-bold text-[#A8A090] tracking-widest uppercase">
+        <div className="relative bg-[#27272A] p-4 rounded-2xl border border-[rgba(255,255,255,0.08)] shadow-xs hover:shadow-md transition-all group overflow-hidden">
+          <div className="w-full h-[3px] bg-[#52525B] absolute top-0 left-0" />
+          <span className="text-[10px] font-bold text-[#71717A] tracking-widest uppercase">
             Essentials & Cigarettes
           </span>
-          <div className="text-2xl font-bold font-serif-display text-[#445566] mt-1">
+          <div className="text-2xl font-bold font-serif-display text-[#52525B] mt-1">
             ৳{essentialSpend.toLocaleString('en-BD')}
           </div>
-          <span className="text-xs text-[#6B6355] mt-1 block">Snacks, tea & daily items</span>
+          <span className="text-xs text-[#A1A1AA] mt-1 block">Snacks, tea & daily items</span>
           <span className="absolute bottom-2 right-3 text-3xl opacity-15 select-none pointer-events-none group-hover:scale-110 transition-transform">
-            🚬
+            
           </span>
         </div>
 
         {/* Card 5: Partner & Outings Budget */}
-        <div className="relative bg-white p-4 rounded-2xl border border-[rgba(0,0,0,0.08)] shadow-xs hover:shadow-md transition-all group overflow-hidden">
-          <div className="w-full h-[3px] bg-[#993556] absolute top-0 left-0" />
-          <span className="text-[10px] font-bold text-[#A8A090] tracking-widest uppercase">
+        <div className="relative bg-[#27272A] p-4 rounded-2xl border border-[rgba(255,255,255,0.08)] shadow-xs hover:shadow-md transition-all group overflow-hidden">
+          <div className="w-full h-[3px] bg-[#E85D8A] absolute top-0 left-0" />
+          <span className="text-[10px] font-bold text-[#71717A] tracking-widest uppercase">
             Partner & Outings
           </span>
-          <div className="text-2xl font-bold font-serif-display text-[#993556] mt-1">
+          <div className="text-2xl font-bold font-serif-display text-[#E85D8A] mt-1">
             ৳{partnerSpend.toLocaleString('en-BD')}
           </div>
-          <span className="text-xs text-[#6B6355] mt-1 block">Treats, dinners & hangouts</span>
+          <span className="text-xs text-[#A1A1AA] mt-1 block">Treats, dinners & hangouts</span>
           <span className="absolute bottom-2 right-3 text-3xl opacity-15 select-none pointer-events-none group-hover:scale-110 transition-transform">
-            💘
+            
           </span>
         </div>
 
         {/* Card 6: Activity & Gaming P/L */}
-        <div className="relative bg-white p-4 rounded-2xl border border-[rgba(0,0,0,0.08)] shadow-xs hover:shadow-md transition-all group overflow-hidden">
-          <div className="w-full h-[3px] bg-[#185FA5] absolute top-0 left-0" />
-          <span className="text-[10px] font-bold text-[#A8A090] tracking-widest uppercase">
+        <div className="relative bg-[#27272A] p-4 rounded-2xl border border-[rgba(255,255,255,0.08)] shadow-xs hover:shadow-md transition-all group overflow-hidden">
+          <div className="w-full h-[3px] bg-[#3B9EFF] absolute top-0 left-0" />
+          <span className="text-[10px] font-bold text-[#71717A] tracking-widest uppercase">
             Gaming & Activity P/L
           </span>
           <div
             className={`text-2xl font-bold font-serif-display mt-1 ${
-              gamingNet >= 0 ? 'text-[#1D9E75]' : 'text-[#D85A30]'
+              gamingNet >= 0 ? 'text-[#00E55F]' : 'text-[#FF6B57]'
             }`}
           >
             {gamingNet >= 0 ? `+৳${gamingNet.toLocaleString('en-BD')}` : `-৳${Math.abs(gamingNet).toLocaleString('en-BD')}`}
           </div>
-          <span className="text-xs text-[#6B6355] mt-1 block">Net result this month</span>
+          <span className="text-xs text-[#A1A1AA] mt-1 block">Net result this month</span>
           <span className="absolute bottom-2 right-3 text-3xl opacity-15 select-none pointer-events-none group-hover:scale-110 transition-transform">
-            🎲
+            
           </span>
         </div>
       </section>
@@ -249,28 +250,28 @@ export const MainColumn: React.FC<MainColumnProps> = ({
       {/* 2. TOOLS GRID (3 FAST-LOGGING TOOL CARDS) */}
       <section className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Tool Card 1: Cigarette & Daily Essentials Helper */}
-        <div className="bg-white p-4 rounded-2xl border border-[rgba(0,0,0,0.08)] shadow-xs flex flex-col justify-between min-h-[260px]">
+        <div className="bg-[#27272A] p-4 rounded-2xl border border-[rgba(255,255,255,0.08)] shadow-xs flex flex-col justify-between min-h-[260px]">
           <div className="flex flex-col gap-2">
-            <div className="flex items-center justify-between border-b border-[rgba(0,0,0,0.06)] pb-2">
-              <span className="text-xs font-bold text-[#2C2820] flex items-center gap-1.5">
-                <Cigarette className="w-4 h-4 text-[#445566]" />
+            <div className="flex items-center justify-between border-b border-[rgba(255,255,255,0.06)] pb-2">
+              <span className="text-xs font-bold text-[#FFFFFF] flex items-center gap-1.5">
+                <Cigarette className="w-4 h-4 text-[#52525B]" />
                 Cigarette & Essentials Budget
               </span>
-              <span className="text-[10px] font-semibold bg-[#F0ECE4] text-[#6B6355] px-2 py-0.5 rounded">
+              <span className="text-[10px] font-semibold bg-[#3F3F46] text-[#A1A1AA] px-2 py-0.5 rounded">
                 Quick Add
               </span>
             </div>
 
             {/* Budget Input Row */}
             <div className="flex items-center gap-2 mt-1">
-              <label className="text-xs text-[#6B6355]">Daily Limit:</label>
+              <label className="text-xs text-[#A1A1AA]">Daily Limit:</label>
               <input
                 type="number"
                 value={essentialDailyBudget}
                 onChange={(e) => setEssentialDailyBudget(Number(e.target.value))}
-                className="w-20 px-2 py-1 text-xs font-semibold rounded border border-[rgba(0,0,0,0.13)] bg-[#F7F4EF] focus:outline-none focus:border-[#1D9E75]"
+                className="w-20 px-2 py-1 text-xs font-semibold rounded border border-[rgba(255,255,255,0.13)] bg-[#09090B] focus:outline-none focus:border-[#00E55F]"
               />
-              <span className="text-xs font-semibold text-[#1D9E75]">৳/day</span>
+              <span className="text-xs font-semibold text-[#00E55F]">৳/day</span>
             </div>
 
             {/* Scrollable Preset Item Buttons */}
@@ -278,14 +279,14 @@ export const MainColumn: React.FC<MainColumnProps> = ({
               {ESSENTIAL_PRESETS.map((item) => (
                 <div
                   key={item.id}
-                  className="flex items-center justify-between p-1.5 rounded-lg bg-[#F7F4EF] hover:bg-[#F0ECE4] text-xs transition-colors"
+                  className="flex items-center justify-between p-1.5 rounded-lg bg-[#09090B] hover:bg-[#3F3F46] text-xs transition-colors"
                 >
-                  <span className="font-medium text-[#2C2820]">{item.name}</span>
+                  <span className="font-medium text-[#FFFFFF]">{item.name}</span>
                   <div className="flex items-center gap-2">
-                    <span className="text-[#6B6355] font-semibold">৳{item.price}</span>
+                    <span className="text-[#A1A1AA] font-semibold">৳{item.price}</span>
                     <button
                       onClick={() => handleAddPreset(item.name, item.price, item.category)}
-                      className="px-2 py-0.5 rounded bg-[#1D9E75] text-white text-[10px] font-bold hover:bg-[#1D9E75]/90 transition-all"
+                      className="px-2 py-0.5 rounded bg-[#00E55F] text-[#062012] text-[10px] font-bold hover:bg-[#00E55F]/90 transition-all"
                     >
                       + Add
                     </button>
@@ -296,21 +297,21 @@ export const MainColumn: React.FC<MainColumnProps> = ({
           </div>
 
           {/* Teal Combo Box */}
-          <div className="bg-[#E1F5EE] border border-[#9FE1CB] p-2.5 rounded-xl text-xs text-[#1D9E75] flex items-center justify-between mt-3">
+          <div className="bg-[rgba(0,229,95,0.12)] border border-[#008A39] p-2.5 rounded-xl text-xs text-[#00E55F] flex items-center justify-between mt-3">
             <span className="font-medium">Suggested Combo:</span>
             <span className="font-bold">1 Stick (৳23) + Milk Tea (৳15) = ৳38</span>
           </div>
         </div>
 
         {/* Tool Card 2: Partner & Outings Expenses */}
-        <div className="bg-white p-4 rounded-2xl border border-[rgba(0,0,0,0.08)] shadow-xs flex flex-col justify-between min-h-[260px]">
+        <div className="bg-[#27272A] p-4 rounded-2xl border border-[rgba(255,255,255,0.08)] shadow-xs flex flex-col justify-between min-h-[260px]">
           <div className="flex flex-col gap-2">
-            <div className="flex items-center justify-between border-b border-[rgba(0,0,0,0.06)] pb-2">
-              <span className="text-xs font-bold text-[#2C2820] flex items-center gap-1.5">
-                <Heart className="w-4 h-4 text-[#993556]" />
+            <div className="flex items-center justify-between border-b border-[rgba(255,255,255,0.06)] pb-2">
+              <span className="text-xs font-bold text-[#FFFFFF] flex items-center gap-1.5">
+                <Heart className="w-4 h-4 text-[#E85D8A]" />
                 Partner & Outings Expenses
               </span>
-              <span className="text-[10px] font-semibold bg-[#FAECE7] text-[#D85A30] px-2 py-0.5 rounded">
+              <span className="text-[10px] font-semibold bg-[rgba(255,107,87,0.12)] text-[#FF6B57] px-2 py-0.5 rounded">
                 Treats
               </span>
             </div>
@@ -320,17 +321,17 @@ export const MainColumn: React.FC<MainColumnProps> = ({
               {PARTNER_PRESETS.map((preset) => (
                 <div
                   key={preset.id}
-                  className="flex items-center justify-between p-1.5 rounded-lg bg-[#F7F4EF] hover:bg-[#F0ECE4] text-xs transition-colors"
+                  className="flex items-center justify-between p-1.5 rounded-lg bg-[#09090B] hover:bg-[#3F3F46] text-xs transition-colors"
                 >
-                  <span className="font-medium text-[#2C2820] flex items-center gap-1.5">
-                    <span>{preset.emoji}</span>
+                  <span className="font-medium text-[#FFFFFF] flex items-center gap-1.5">
+                    <CategoryIcon name={preset.icon} className="w-3.5 h-3.5 text-[#E85D8A]" />
                     <span>{preset.name}</span>
                   </span>
                   <div className="flex items-center gap-2">
-                    <span className="text-[#6B6355] font-semibold">৳{preset.price}</span>
+                    <span className="text-[#A1A1AA] font-semibold">৳{preset.price}</span>
                     <button
                       onClick={() => handleAddPreset(preset.name, preset.price, 'partner')}
-                      className="px-2 py-0.5 rounded bg-[#993556] text-white text-[10px] font-bold hover:bg-[#993556]/90 transition-all"
+                      className="px-2 py-0.5 rounded bg-[#E85D8A] text-white text-[10px] font-bold hover:bg-[#E85D8A]/90 transition-all"
                     >
                       + Add
                     </button>
@@ -343,7 +344,7 @@ export const MainColumn: React.FC<MainColumnProps> = ({
           {/* Primary Date Night Bundle Button */}
           <button
             onClick={handleAddDateBundle}
-            className="w-full py-2 px-3 rounded-xl bg-gradient-to-r from-[#993556] to-[#D85A30] text-white text-xs font-bold shadow-xs hover:opacity-95 transition-all flex items-center justify-center gap-2 mt-3"
+            className="w-full py-2 px-3 rounded-xl bg-gradient-to-r from-[#E85D8A] to-[#FF6B57] text-white text-xs font-bold shadow-xs hover:opacity-95 transition-all flex items-center justify-center gap-2 mt-3"
           >
             <Heart className="w-3.5 h-3.5 fill-white" />
             <span>+ Add Date Night Bundle (৳1,480)</span>
@@ -351,21 +352,21 @@ export const MainColumn: React.FC<MainColumnProps> = ({
         </div>
 
         {/* Tool Card 3: Gaming & Activity Tracker */}
-        <div className="bg-white p-4 rounded-2xl border border-[rgba(0,0,0,0.08)] shadow-xs flex flex-col justify-between min-h-[260px]">
+        <div className="bg-[#27272A] p-4 rounded-2xl border border-[rgba(255,255,255,0.08)] shadow-xs flex flex-col justify-between min-h-[260px]">
           <form onSubmit={handleAddGamingEntry} className="flex flex-col gap-2">
-            <div className="flex items-center justify-between border-b border-[rgba(0,0,0,0.06)] pb-2">
-              <span className="text-xs font-bold text-[#2C2820] flex items-center gap-1.5">
-                <Dices className="w-4 h-4 text-[#185FA5]" />
+            <div className="flex items-center justify-between border-b border-[rgba(255,255,255,0.06)] pb-2">
+              <span className="text-xs font-bold text-[#FFFFFF] flex items-center gap-1.5">
+                <Dices className="w-4 h-4 text-[#3B9EFF]" />
                 Activity & Gaming Tracker
               </span>
-              <span className="text-[10px] font-semibold bg-[#EEEDFE] text-[#534AB7] px-2 py-0.5 rounded">
+              <span className="text-[10px] font-semibold bg-[rgba(139,127,245,0.12)] text-[#8B7FF5] px-2 py-0.5 rounded">
                 P/L
               </span>
             </div>
 
             <div className="grid grid-cols-2 gap-2 mt-1">
               <div>
-                <label className="text-[10px] font-bold text-[#A8A090] uppercase block mb-1">
+                <label className="text-[10px] font-bold text-[#71717A] uppercase block mb-1">
                   Amount (৳)
                 </label>
                 <input
@@ -373,19 +374,19 @@ export const MainColumn: React.FC<MainColumnProps> = ({
                   placeholder="e.g. 500"
                   value={gamingAmount}
                   onChange={(e) => setGamingAmount(e.target.value ? Number(e.target.value) : '')}
-                  className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-[rgba(0,0,0,0.13)] bg-[#F7F4EF] focus:outline-none focus:border-[#185FA5]"
+                  className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-[rgba(255,255,255,0.13)] bg-[#09090B] focus:outline-none focus:border-[#3B9EFF]"
                   required
                 />
               </div>
 
               <div>
-                <label className="text-[10px] font-bold text-[#A8A090] uppercase block mb-1">
+                <label className="text-[10px] font-bold text-[#71717A] uppercase block mb-1">
                   Type
                 </label>
                 <select
                   value={gamingType}
                   onChange={(e) => setGamingType(e.target.value as 'profit' | 'loss')}
-                  className="w-full px-2 py-1.5 text-xs rounded-lg border border-[rgba(0,0,0,0.13)] bg-[#F7F4EF] focus:outline-none focus:border-[#185FA5]"
+                  className="w-full px-2 py-1.5 text-xs rounded-lg border border-[rgba(255,255,255,0.13)] bg-[#09090B] focus:outline-none focus:border-[#3B9EFF]"
                 >
                   <option value="loss">Loss Entry</option>
                   <option value="profit">Win / Profit</option>
@@ -394,7 +395,7 @@ export const MainColumn: React.FC<MainColumnProps> = ({
             </div>
 
             <div>
-              <label className="text-[10px] font-bold text-[#A8A090] uppercase block mb-1">
+              <label className="text-[10px] font-bold text-[#71717A] uppercase block mb-1">
                 Note / Match
               </label>
               <input
@@ -402,24 +403,24 @@ export const MainColumn: React.FC<MainColumnProps> = ({
                 placeholder="e.g. FIFA tournament entry"
                 value={gamingNote}
                 onChange={(e) => setGamingNote(e.target.value)}
-                className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-[rgba(0,0,0,0.13)] bg-[#F7F4EF] focus:outline-none focus:border-[#185FA5]"
+                className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-[rgba(255,255,255,0.13)] bg-[#09090B] focus:outline-none focus:border-[#3B9EFF]"
               />
             </div>
 
             <button
               type="submit"
-              className="w-full py-2 mt-1 rounded-xl bg-gradient-to-r from-[#185FA5] to-[#2B6CB0] text-white text-xs font-bold hover:opacity-95 transition-all shadow-xs"
+              className="w-full py-2 mt-1 rounded-xl bg-gradient-to-r from-[#3B9EFF] to-[#4C8DFF] text-white text-xs font-bold hover:opacity-95 transition-all shadow-xs"
             >
               Add Gaming Entry
             </button>
           </form>
 
           {/* Live Net Summary Box */}
-          <div className="bg-[#F0ECE4] p-2.5 rounded-xl text-xs flex justify-between items-center text-[#6B6355] mt-2">
+          <div className="bg-[#3F3F46] p-2.5 rounded-xl text-xs flex justify-between items-center text-[#A1A1AA] mt-2">
             <span>Month Net Result:</span>
             <span
               className={`font-bold ${
-                gamingNet >= 0 ? 'text-[#1D9E75]' : 'text-[#D85A30]'
+                gamingNet >= 0 ? 'text-[#00E55F]' : 'text-[#FF6B57]'
               }`}
             >
               {gamingNet >= 0 ? `+৳${gamingNet}` : `-৳${Math.abs(gamingNet)}`}
@@ -429,33 +430,33 @@ export const MainColumn: React.FC<MainColumnProps> = ({
       </section>
 
       {/* 3. CHART SECTION: SPENDING BY CATEGORY */}
-      <section className="bg-white p-5 rounded-2xl border border-[rgba(0,0,0,0.08)] shadow-xs flex flex-col gap-4">
+      <section className="bg-[#27272A] p-5 rounded-2xl border border-[rgba(255,255,255,0.08)] shadow-xs flex flex-col gap-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="text-sm font-bold text-[#2C2820]">Spending by Category</span>
-            <span className="text-xs text-[#A8A090]">Top Expense Areas</span>
+            <span className="text-sm font-bold text-[#FFFFFF]">Spending by Category</span>
+            <span className="text-xs text-[#71717A]">Top Expense Areas</span>
           </div>
-          <span className="text-xs text-[#6B6355] font-serif-display italic">Live Breakdown</span>
+          <span className="text-xs text-[#A1A1AA] font-serif-display italic">Live Breakdown</span>
         </div>
 
         {/* Animated Bar Chart */}
         {categoryChartData.length === 0 ? (
-          <div className="text-center py-8 text-xs text-[#A8A090]">
+          <div className="text-center py-8 text-xs text-[#71717A]">
             No category expense data recorded yet.
           </div>
         ) : (
-          <div className="flex items-end justify-between gap-4 h-36 pt-6 pb-2 px-2 border-b border-[rgba(0,0,0,0.06)]">
+          <div className="flex items-end justify-between gap-4 h-36 pt-6 pb-2 px-2 border-b border-[rgba(255,255,255,0.06)]">
             {categoryChartData.map((item, idx) => {
               const heightPercent = Math.max(Math.round((item.spent / maxCategorySpent) * 100), 12);
               return (
                 <div key={item.id} className="flex-1 flex flex-col items-center gap-2 group h-full justify-end">
                   {/* Amount Label on Hover */}
-                  <span className="text-[10px] font-semibold text-[#6B6355] opacity-80 group-hover:opacity-100 transition-opacity">
+                  <span className="text-[10px] font-semibold text-[#A1A1AA] opacity-80 group-hover:opacity-100 transition-opacity">
                     ৳{item.spent.toLocaleString('en-BD')}
                   </span>
 
                   {/* Bar Element */}
-                  <div className="w-full max-w-[42px] bg-[#F0ECE4] rounded-t-lg overflow-hidden h-full flex items-end">
+                  <div className="w-full max-w-[42px] bg-[#3F3F46] rounded-t-lg overflow-hidden h-full flex items-end">
                     <div
                       className="w-full rounded-t-lg transition-all duration-700 animate-float-bar"
                       style={{
@@ -466,9 +467,9 @@ export const MainColumn: React.FC<MainColumnProps> = ({
                     />
                   </div>
 
-                  {/* Category Emoji & Name */}
-                  <span className="text-[11px] font-medium text-[#2C2820] truncate max-w-full flex items-center gap-1">
-                    <span>{item.emoji}</span>
+                  {/* Category Icon & Name */}
+                  <span className="text-[11px] font-medium text-[#FFFFFF] truncate max-w-full flex items-center gap-1">
+                    <CategoryIcon name={item.icon} className="w-3.5 h-3.5" style={{ color: item.color }} />
                     <span className="hidden sm:inline truncate">{item.name.split(' ')[0]}</span>
                   </span>
                 </div>
@@ -479,25 +480,25 @@ export const MainColumn: React.FC<MainColumnProps> = ({
       </section>
 
       {/* 4. TRANSACTIONS SECTION */}
-      <section className="bg-white p-5 rounded-2xl border border-[rgba(0,0,0,0.08)] shadow-xs flex flex-col gap-4">
+      <section className="bg-[#27272A] p-5 rounded-2xl border border-[rgba(255,255,255,0.08)] shadow-xs flex flex-col gap-4">
         {/* Title & Count Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[rgba(0,0,0,0.06)] pb-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[rgba(255,255,255,0.06)] pb-3">
           <div className="flex items-center gap-2">
-            <span className="text-base font-bold text-[#2C2820]">Transaction History</span>
-            <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-[#F0ECE4] text-[#6B6355]">
+            <span className="text-base font-bold text-[#FFFFFF]">Transaction History</span>
+            <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-[#3F3F46] text-[#A1A1AA]">
               {filteredTransactions.length} entries
             </span>
           </div>
 
           {/* Search Filter Bar */}
           <div className="relative w-full sm:w-64">
-            <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-[#A8A090]" />
+            <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-[#71717A]" />
             <input
               type="text"
               placeholder="Search transactions..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-8 pr-3 py-1.5 text-xs rounded-lg border border-[rgba(0,0,0,0.13)] bg-[#F7F4EF] focus:outline-none focus:border-[#1D9E75]"
+              className="w-full pl-8 pr-3 py-1.5 text-xs rounded-lg border border-[rgba(255,255,255,0.13)] bg-[#09090B] focus:outline-none focus:border-[#00E55F]"
             />
           </div>
         </div>
@@ -508,8 +509,8 @@ export const MainColumn: React.FC<MainColumnProps> = ({
             onClick={() => onSelectCategory(null)}
             className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap transition-all ${
               selectedCategory === null
-                ? 'bg-[#1D9E75] text-white shadow-2xs font-semibold'
-                : 'bg-[#F0ECE4] text-[#6B6355] hover:bg-[#A8A090]/20'
+                ? 'bg-[#00E55F] text-[#062012] shadow-2xs font-semibold'
+                : 'bg-[#3F3F46] text-[#A1A1AA] hover:bg-[#71717A]/20'
             }`}
           >
             All Category Filter
@@ -521,11 +522,11 @@ export const MainColumn: React.FC<MainColumnProps> = ({
               onClick={() => onSelectCategory(cat.id)}
               className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap transition-all flex items-center gap-1 ${
                 selectedCategory === cat.id
-                  ? 'bg-[#1D9E75] text-white shadow-2xs font-semibold'
-                  : 'bg-[#F0ECE4] text-[#6B6355] hover:bg-[#A8A090]/20'
+                  ? 'bg-[#00E55F] text-[#062012] shadow-2xs font-semibold'
+                  : 'bg-[#3F3F46] text-[#A1A1AA] hover:bg-[#71717A]/20'
               }`}
             >
-              <span>{cat.emoji}</span>
+              <CategoryIcon name={cat.icon} className="w-3.5 h-3.5" />
               <span>{cat.name}</span>
             </button>
           ))}
@@ -534,8 +535,8 @@ export const MainColumn: React.FC<MainColumnProps> = ({
         {/* Transactions List */}
         <div className="flex flex-col gap-2 mt-1">
           {filteredTransactions.length === 0 ? (
-            <div className="text-center py-12 text-xs text-[#A8A090] flex flex-col items-center gap-2">
-              <Filter className="w-6 h-6 text-[#A8A090]" />
+            <div className="text-center py-12 text-xs text-[#71717A] flex flex-col items-center gap-2">
+              <Filter className="w-6 h-6 text-[#71717A]" />
               <span>No transactions match your search or filter criteria.</span>
             </div>
           ) : (
@@ -546,25 +547,31 @@ export const MainColumn: React.FC<MainColumnProps> = ({
               return (
                 <div
                   key={tx.id}
-                  className="p-3 rounded-xl bg-[#F7F4EF] hover:bg-[#F0ECE4] transition-all flex items-center justify-between group border border-[rgba(0,0,0,0.04)] animate-slide-in"
+                  className="p-3 rounded-xl bg-[#09090B] hover:bg-[#3F3F46] transition-all flex items-center justify-between group border border-[rgba(255,255,255,0.06)] animate-slide-in"
                 >
                   {/* Icon & Title */}
                   <div className="flex items-center gap-3">
                     <div
-                      className="w-9 h-9 rounded-xl flex items-center justify-center text-base shrink-0 shadow-2xs"
+                      className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 shadow-2xs"
                       style={{
-                        backgroundColor: catObj ? `${catObj.color}15` : '#1D9E7515',
-                        color: catObj?.color || '#1D9E75',
+                        backgroundColor: catObj ? `${catObj.color}15` : '#00E55F15',
+                        color: catObj?.color || '#00E55F',
                       }}
                     >
-                      {catObj ? catObj.emoji : isExpense ? '🧾' : '💰'}
+                      {catObj ? (
+                        <CategoryIcon name={catObj.icon} className="w-4 h-4" />
+                      ) : isExpense ? (
+                        <Receipt className="w-4 h-4" />
+                      ) : (
+                        <DollarSign className="w-4 h-4" />
+                      )}
                     </div>
 
                     <div className="flex flex-col">
-                      <span className="text-xs font-semibold text-[#2C2820] line-clamp-1">
+                      <span className="text-xs font-semibold text-[#FFFFFF] line-clamp-1">
                         {tx.desc}
                       </span>
-                      <span className="text-[10px] text-[#A8A090] flex items-center gap-2">
+                      <span className="text-[10px] text-[#71717A] flex items-center gap-2">
                         <span>{tx.date}</span>
                         {tx.note && <span>• {tx.note}</span>}
                         {tx.source && <span>• Source: {tx.source}</span>}
@@ -576,7 +583,7 @@ export const MainColumn: React.FC<MainColumnProps> = ({
                   <div className="flex items-center gap-3">
                     <span
                       className={`text-xs font-bold font-serif-display tabular-nums ${
-                        isExpense ? 'text-[#D85A30]' : 'text-[#1D9E75]'
+                        isExpense ? 'text-[#FF6B57]' : 'text-[#00E55F]'
                       }`}
                     >
                       {isExpense ? '-' : '+'}৳{tx.amount.toLocaleString('en-BD')}
@@ -587,7 +594,7 @@ export const MainColumn: React.FC<MainColumnProps> = ({
                         onDeleteTransaction(tx.id);
                         onShowToast('Transaction removed');
                       }}
-                      className="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg text-[#A8A090] hover:text-[#A32D2D] hover:bg-[#FCEBEB] transition-all"
+                      className="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg text-[#71717A] hover:text-[#EF4444] hover:bg-[rgba(239,68,68,0.12)] transition-all"
                       title="Delete entry"
                     >
                       <Trash2 className="w-3.5 h-3.5" />

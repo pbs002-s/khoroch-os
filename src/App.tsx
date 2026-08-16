@@ -177,7 +177,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F7F4EF] text-[#2C2820] flex flex-col font-sans selection:bg-[#1D9E75]/20 overflow-x-hidden">
+    <div className="min-h-screen bg-[#09090B] text-[#FFFFFF] flex flex-col font-sans selection:bg-[#00E55F]/20 overflow-x-hidden">
       {/* Top Web Navigation Bar */}
       <Navbar
         activeTab={activeTab}
@@ -190,15 +190,15 @@ export default function App() {
       {/* Main Website Viewport */}
       <div className="w-full flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 flex flex-col relative">
         {/* Mobile Swipe Helper Bar */}
-        <div className="md:hidden mb-3 bg-[#E1F5EE] border border-[#9FE1CB]/60 px-3 py-1.5 rounded-xl flex items-center justify-between text-[11px] font-semibold text-[#1D9E75] select-none">
-          <span>👈 Swipe screens or tap tabs below 👇</span>
+        <div className="md:hidden mb-3 bg-[rgba(0,229,95,0.12)] border border-[#008A39]/60 px-3 py-1.5 rounded-xl flex items-center justify-between text-[11px] font-mono-label uppercase text-[#00E55F] select-none">
+          <span>Swipe or tap tabs below</span>
           <div className="flex items-center gap-1">
             {TABS.map((tab) => (
               <button
                 key={tab}
                 onClick={() => handleTabChange(tab)}
                 className={`h-1.5 rounded-full transition-all ${
-                  activeTab === tab ? 'w-4 bg-[#1D9E75]' : 'w-1.5 bg-[#1D9E75]/30'
+                  activeTab === tab ? 'w-4 bg-[#00E55F]' : 'w-1.5 bg-[#00E55F]/30'
                 }`}
                 title={`Go to ${tab}`}
               />

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Category, Transaction } from '../types';
-import { Search, Filter, Trash2, ArrowUpRight, ArrowDownLeft, Receipt } from 'lucide-react';
+import { Search, Filter, Trash2, ArrowUpRight, ArrowDownLeft, Receipt, Wallet } from 'lucide-react';
+import { CategoryIcon } from '../constants/icons';
 
 interface TransactionsTabProps {
   categories: Category[];
@@ -55,7 +56,7 @@ export const TransactionsTab: React.FC<TransactionsTabProps> = ({
   const handleDelete = (id: string, desc: string) => {
     if (window.confirm(`Delete transaction "${desc}"?`)) {
       onDeleteTransaction(id);
-      onShowToast('Transaction deleted ✓');
+      onShowToast('Transaction deleted');
     }
   };
 
@@ -64,10 +65,10 @@ export const TransactionsTab: React.FC<TransactionsTabProps> = ({
       {/* Header & Quick Action */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-bold text-[#2C2820] font-serif-display">
+          <h2 className="text-lg font-bold text-[#FFFFFF]">
             Transaction History
           </h2>
-          <p className="text-xs text-[#6B6355]">
+          <p className="text-xs text-[#A1A1AA]">
             {filteredTxns.length} records found
           </p>
         </div>
@@ -75,13 +76,13 @@ export const TransactionsTab: React.FC<TransactionsTabProps> = ({
         <div className="flex items-center gap-2">
           <button
             onClick={onOpenIncomeModal}
-            className="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-[#1D9E75] text-white hover:bg-[#1D9E75]/90 transition-all shadow-2xs"
+            className="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-[#00E55F] text-[#062012] hover:bg-[#00E55F]/90 transition-all shadow-2xs"
           >
             + Income
           </button>
           <button
             onClick={onOpenExpenseModal}
-            className="px-2.5 py-1.5 rounded-lg text-xs font-bold border border-[#D85A30] text-[#D85A30] hover:bg-[#FAECE7] transition-all"
+            className="px-2.5 py-1.5 rounded-lg text-xs font-bold border border-[#FF6B57] text-[#FF6B57] hover:bg-[rgba(255,107,87,0.12)] transition-all"
           >
             + Expense
           </button>
@@ -90,13 +91,13 @@ export const TransactionsTab: React.FC<TransactionsTabProps> = ({
 
       {/* Search Input */}
       <div className="relative">
-        <Search className="w-4 h-4 text-[#A8A090] absolute left-3 top-1/2 -translate-y-1/2" />
+        <Search className="w-4 h-4 text-[#71717A] absolute left-3 top-1/2 -translate-y-1/2" />
         <input
           type="text"
           placeholder="Search transactions by title, note, or amount..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full pl-9 pr-4 py-2.5 text-xs rounded-xl border border-[rgba(0,0,0,0.13)] bg-white focus:outline-none focus:border-[#1D9E75]"
+          className="w-full pl-9 pr-4 py-2.5 text-xs rounded-xl border border-[rgba(255,255,255,0.13)] bg-[#27272A] focus:outline-none focus:border-[#00E55F]"
         />
       </div>
 
@@ -106,8 +107,8 @@ export const TransactionsTab: React.FC<TransactionsTabProps> = ({
           onClick={() => setTypeFilter('all')}
           className={`flex-1 py-1.5 rounded-xl text-xs font-bold transition-all ${
             typeFilter === 'all'
-              ? 'bg-[#2C2820] text-white shadow-2xs'
-              : 'bg-[#F0ECE4] text-[#6B6355] hover:bg-[#E1F5EE]'
+              ? 'bg-[#00E55F] text-[#062012] shadow-2xs'
+              : 'bg-[#3F3F46] text-[#A1A1AA] hover:bg-[rgba(0,229,95,0.12)]'
           }`}
         >
           All
@@ -116,8 +117,8 @@ export const TransactionsTab: React.FC<TransactionsTabProps> = ({
           onClick={() => setTypeFilter('expense')}
           className={`flex-1 py-1.5 rounded-xl text-xs font-bold transition-all ${
             typeFilter === 'expense'
-              ? 'bg-[#D85A30] text-white shadow-2xs'
-              : 'bg-[#F0ECE4] text-[#6B6355] hover:bg-[#FAECE7]'
+              ? 'bg-[#FF6B57] text-white shadow-2xs'
+              : 'bg-[#3F3F46] text-[#A1A1AA] hover:bg-[rgba(255,107,87,0.12)]'
           }`}
         >
           Expenses Only
@@ -126,8 +127,8 @@ export const TransactionsTab: React.FC<TransactionsTabProps> = ({
           onClick={() => setTypeFilter('income')}
           className={`flex-1 py-1.5 rounded-xl text-xs font-bold transition-all ${
             typeFilter === 'income'
-              ? 'bg-[#1D9E75] text-white shadow-2xs'
-              : 'bg-[#F0ECE4] text-[#6B6355] hover:bg-[#E1F5EE]'
+              ? 'bg-[#00E55F] text-[#062012] shadow-2xs'
+              : 'bg-[#3F3F46] text-[#A1A1AA] hover:bg-[rgba(0,229,95,0.12)]'
           }`}
         >
           Income Only
@@ -140,8 +141,8 @@ export const TransactionsTab: React.FC<TransactionsTabProps> = ({
           onClick={() => setSelectedCatFilter(null)}
           className={`px-3 py-1 rounded-full text-[11px] font-semibold whitespace-nowrap transition-all ${
             selectedCatFilter === null
-              ? 'bg-[#1D9E75] text-white'
-              : 'bg-white border border-[rgba(0,0,0,0.08)] text-[#6B6355] hover:bg-[#F0ECE4]'
+              ? 'bg-[#00E55F] text-[#062012]'
+              : 'bg-[#27272A] border border-[rgba(255,255,255,0.08)] text-[#A1A1AA] hover:bg-[#3F3F46]'
           }`}
         >
           All Categories
@@ -154,23 +155,23 @@ export const TransactionsTab: React.FC<TransactionsTabProps> = ({
             }
             className={`px-2.5 py-1 rounded-full text-[11px] font-medium whitespace-nowrap transition-all flex items-center gap-1 ${
               selectedCatFilter === cat.id
-                ? 'bg-[#2C2820] text-white'
-                : 'bg-white border border-[rgba(0,0,0,0.08)] text-[#6B6355] hover:bg-[#F0ECE4]'
+                ? 'bg-[#00E55F] text-[#062012]'
+                : 'bg-[#27272A] border border-[rgba(255,255,255,0.08)] text-[#A1A1AA] hover:bg-[#3F3F46]'
             }`}
           >
-            <span>{cat.emoji}</span>
+            <CategoryIcon name={cat.icon} className="w-3.5 h-3.5" />
             <span>{cat.name}</span>
           </button>
         ))}
       </div>
 
       {/* Summary Row */}
-      <div className="bg-[#F7F4EF] p-3 rounded-xl border border-[rgba(0,0,0,0.06)] flex justify-between items-center text-xs">
-        <div className="flex items-center gap-1.5 text-[#1D9E75] font-bold">
+      <div className="bg-[#09090B] p-3 rounded-xl border border-[rgba(255,255,255,0.06)] flex justify-between items-center text-xs">
+        <div className="flex items-center gap-1.5 text-[#00E55F] font-bold">
           <ArrowDownLeft className="w-3.5 h-3.5" />
           <span>Income: ৳{totalFilteredIncome.toLocaleString('en-BD')}</span>
         </div>
-        <div className="flex items-center gap-1.5 text-[#D85A30] font-bold">
+        <div className="flex items-center gap-1.5 text-[#FF6B57] font-bold">
           <ArrowUpRight className="w-3.5 h-3.5" />
           <span>Expense: ৳{totalFilteredExpense.toLocaleString('en-BD')}</span>
         </div>
@@ -178,10 +179,10 @@ export const TransactionsTab: React.FC<TransactionsTabProps> = ({
 
       {/* Transaction List */}
       {filteredTxns.length === 0 ? (
-        <div className="py-12 bg-white rounded-2xl border border-[rgba(0,0,0,0.08)] p-6 text-center text-xs flex flex-col items-center gap-2">
-          <Receipt className="w-8 h-8 text-[#A8A090]" />
-          <p className="font-bold text-[#2C2820]">No matching transactions found.</p>
-          <p className="text-[11px] text-[#6B6355]">
+        <div className="py-12 bg-[#27272A] rounded-2xl border border-[rgba(255,255,255,0.08)] p-6 text-center text-xs flex flex-col items-center gap-2">
+          <Receipt className="w-8 h-8 text-[#71717A]" />
+          <p className="font-bold text-[#FFFFFF]">No matching transactions found.</p>
+          <p className="text-[11px] text-[#A1A1AA]">
             Try resetting your filters or add a new transaction.
           </p>
         </div>
@@ -194,29 +195,36 @@ export const TransactionsTab: React.FC<TransactionsTabProps> = ({
             return (
               <div
                 key={tx.id}
-                className="p-3 bg-white rounded-2xl border border-[rgba(0,0,0,0.08)] shadow-2xs flex items-center justify-between text-xs hover:border-[#1D9E75]/40 transition-all"
+                className="p-3 bg-[#27272A] rounded-2xl border border-[rgba(255,255,255,0.08)] shadow-2xs flex items-center justify-between text-xs hover:border-[#00E55F]/40 transition-all"
               >
                 <div className="flex items-center gap-3">
                   <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center text-base shrink-0"
+                    className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
                     style={{
-                      backgroundColor: catObj ? `${catObj.color}20` : '#1D9E7520',
+                      backgroundColor: catObj ? `${catObj.color}20` : '#00E55F20',
+                      color: catObj ? catObj.color : '#00E55F',
                     }}
                   >
-                    {catObj ? catObj.emoji : isExpense ? '🧾' : '💰'}
+                    {catObj ? (
+                      <CategoryIcon name={catObj.icon} className="w-4.5 h-4.5" />
+                    ) : isExpense ? (
+                      <Receipt className="w-4.5 h-4.5" />
+                    ) : (
+                      <Wallet className="w-4.5 h-4.5" />
+                    )}
                   </div>
 
                   <div className="flex flex-col">
-                    <span className="font-bold text-[#2C2820] text-sm">
+                    <span className="font-bold text-[#FFFFFF] text-sm">
                       {tx.desc}
                     </span>
-                    <div className="flex items-center gap-2 text-[10px] text-[#A8A090] mt-0.5">
+                    <div className="flex items-center gap-2 text-[10px] text-[#71717A] mt-0.5">
                       <span>{tx.date}</span>
                       {tx.source && <span>• {tx.source}</span>}
                       {catObj && <span>• {catObj.name}</span>}
                     </div>
                     {tx.note && (
-                      <span className="text-[10px] text-[#6B6355] italic mt-0.5">
+                      <span className="text-[10px] text-[#A1A1AA] italic mt-0.5">
                         "{tx.note}"
                       </span>
                     )}
@@ -226,7 +234,7 @@ export const TransactionsTab: React.FC<TransactionsTabProps> = ({
                 <div className="flex items-center gap-3">
                   <span
                     className={`font-bold font-serif-display text-sm tabular-nums ${
-                      isExpense ? 'text-[#D85A30]' : 'text-[#1D9E75]'
+                      isExpense ? 'text-[#FF6B57]' : 'text-[#00E55F]'
                     }`}
                   >
                     {isExpense ? '-' : '+'}৳{tx.amount.toLocaleString('en-BD')}
@@ -234,7 +242,7 @@ export const TransactionsTab: React.FC<TransactionsTabProps> = ({
 
                   <button
                     onClick={() => handleDelete(tx.id, tx.desc)}
-                    className="p-1.5 rounded-lg text-[#A8A090] hover:text-[#D85A30] hover:bg-[#FAECE7] active:scale-95 transition-all"
+                    className="p-1.5 rounded-lg text-[#71717A] hover:text-[#FF6B57] hover:bg-[rgba(255,107,87,0.12)] active:scale-95 transition-all"
                     title="Delete entry"
                   >
                     <Trash2 className="w-4 h-4" />

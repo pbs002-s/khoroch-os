@@ -1,23 +1,23 @@
 import { Category, EssentialPreset, PartnerPreset, Transaction } from '../types';
 
 export const CATEGORIES: Category[] = [
-  { id: 'food', name: 'Food & Dining', emoji: '🍱', color: '#1D9E75', budget: 4000 },
-  { id: 'hall', name: 'Hall Dining', emoji: '🍲', color: '#BA7517', budget: 2500 },
-  { id: 'transport', name: 'Transport', emoji: '🚌', color: '#2B6CB0', budget: 1500 },
-  { id: 'printout', name: 'Printout & Stationery', emoji: '📄', color: '#D69E2E', budget: 600 },
-  { id: 'recharge', name: 'Mobile Recharge & Data', emoji: '📱', color: '#805AD5', budget: 800 },
-  { id: 'banking', name: 'Banking & Send Money', emoji: '💳', color: '#319795', budget: 500 },
-  { id: 'tea', name: 'Tea & Snacks', emoji: '☕', color: '#DD6B20', budget: 1200 },
-  { id: 'books', name: 'Books & Study Material', emoji: '📚', color: '#3182CE', budget: 1500 },
-  { id: 'sports', name: 'Sports & Recreation', emoji: '⚽', color: '#38A169', budget: 800 },
-  { id: 'clothing', name: 'Clothing & Laundry', emoji: '👕', color: '#E53E3E', budget: 1500 },
-  { id: 'health', name: 'Medicine & Health', emoji: '💊', color: '#E53E3E', budget: 800 },
-  { id: 'events', name: 'Events & Outings', emoji: '🎟️', color: '#D69E2E', budget: 1200 },
-  { id: 'essentials', name: 'Daily Essentials / Cigarette', emoji: '🚬', color: '#445566', budget: 1000 },
-  { id: 'partner', name: 'Partner & Outings', emoji: '💘', color: '#993556', budget: 3000 },
-  { id: 'gaming', name: 'Gaming & Activity P/L', emoji: '🎲', color: '#185FA5', budget: 1000 },
-  { id: 'rent', name: 'Room Rent & Utilities', emoji: '🏠', color: '#4C51BF', budget: 5000 },
-  { id: 'misc', name: 'Miscellaneous', emoji: '📦', color: '#718096', budget: 1000 },
+  { id: 'food', name: 'Food & Dining', icon: 'UtensilsCrossed', color: '#00E55F', budget: 4000 },
+  { id: 'hall', name: 'Hall Dining', icon: 'Soup', color: '#F5A623', budget: 2500 },
+  { id: 'transport', name: 'Transport', icon: 'Bus', color: '#4C8DFF', budget: 1500 },
+  { id: 'printout', name: 'Printout & Stationery', icon: 'FileText', color: '#D69E2E', budget: 600 },
+  { id: 'recharge', name: 'Mobile Recharge & Data', icon: 'Smartphone', color: '#8B7FF5', budget: 800 },
+  { id: 'banking', name: 'Banking & Send Money', icon: 'CreditCard', color: '#14B8A6', budget: 500 },
+  { id: 'tea', name: 'Tea & Snacks', icon: 'Coffee', color: '#DD6B20', budget: 1200 },
+  { id: 'books', name: 'Books & Study Material', icon: 'BookOpen', color: '#3B9EFF', budget: 1500 },
+  { id: 'sports', name: 'Sports & Recreation', icon: 'Dumbbell', color: '#22C55E', budget: 800 },
+  { id: 'clothing', name: 'Clothing & Laundry', icon: 'Shirt', color: '#EF4444', budget: 1500 },
+  { id: 'health', name: 'Medicine & Health', icon: 'Pill', color: '#EF4444', budget: 800 },
+  { id: 'events', name: 'Events & Outings', icon: 'Ticket', color: '#D69E2E', budget: 1200 },
+  { id: 'essentials', name: 'Daily Essentials', icon: 'ShoppingBag', color: '#71717A', budget: 1000 },
+  { id: 'partner', name: 'Partner & Outings', icon: 'Heart', color: '#E85D8A', budget: 3000 },
+  { id: 'gaming', name: 'Gaming & Activity P/L', icon: 'Dices', color: '#3B9EFF', budget: 1000 },
+  { id: 'rent', name: 'Room Rent & Utilities', icon: 'Home', color: '#4C51BF', budget: 5000 },
+  { id: 'misc', name: 'Miscellaneous', icon: 'Package', color: '#71717A', budget: 1000 },
 ];
 
 export const ESSENTIAL_PRESETS: EssentialPreset[] = [
@@ -32,12 +32,12 @@ export const ESSENTIAL_PRESETS: EssentialPreset[] = [
 ];
 
 export const PARTNER_PRESETS: PartnerPreset[] = [
-  { id: 'p1', name: 'Ice Cream Treat', price: 180, emoji: '🍦' },
-  { id: 'p2', name: 'Restaurant Dinner', price: 850, emoji: '🍕' },
-  { id: 'p3', name: 'Weekend Hangout', price: 450, emoji: '🍿' },
-  { id: 'p4', name: 'Tour / Outing Fund', price: 1500, emoji: '🏖️' },
-  { id: 'p5', name: 'Surprise Flowers', price: 250, emoji: '💐' },
-  { id: 'p6', name: 'Special Cafe Coffee', price: 120, emoji: '☕' },
+  { id: 'p1', name: 'Ice Cream Treat', price: 180, icon: 'IceCream' },
+  { id: 'p2', name: 'Restaurant Dinner', price: 850, icon: 'UtensilsCrossed' },
+  { id: 'p3', name: 'Weekend Hangout', price: 450, icon: 'Popcorn' },
+  { id: 'p4', name: 'Tour / Outing Fund', price: 1500, icon: 'Palmtree' },
+  { id: 'p5', name: 'Surprise Flowers', price: 250, icon: 'Flower2' },
+  { id: 'p6', name: 'Special Cafe Coffee', price: 120, icon: 'Coffee' },
 ];
 
 export const INCOME_SOURCES = [

@@ -41,21 +41,21 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const budgetRemaining = monthlyBudgetLimit - totalSpent;
 
   const getBudgetProgressColor = (percent: number) => {
-    if (percent >= 90) return '#D85A30'; // Coral
-    if (percent >= 70) return '#BA7517'; // Amber
-    return '#1D9E75'; // Teal
+    if (percent >= 90) return '#FF6B57'; // Coral
+    if (percent >= 70) return '#F5A623'; // Amber
+    return '#00E55F'; // Teal
   };
 
   return (
-    <aside className="w-[260px] h-full bg-white border-r border-[rgba(0,0,0,0.08)] flex flex-col overflow-y-auto p-4 gap-6 select-none shrink-0">
+    <aside className="w-[260px] h-full bg-[#27272A] border-r border-[rgba(255,255,255,0.08)] flex flex-col overflow-y-auto p-4 gap-6 select-none shrink-0">
       {/* SECTION 1: CATEGORIES */}
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between px-1">
-          <span className="text-[10px] font-bold text-[#A8A090] tracking-widest uppercase flex items-center gap-1">
-            <Layers className="w-3 h-3 text-[#1D9E75]" />
+          <span className="text-[10px] font-bold text-[#71717A] tracking-widest uppercase flex items-center gap-1">
+            <Layers className="w-3 h-3 text-[#00E55F]" />
             Categories
           </span>
-          <span className="text-[10px] font-semibold text-[#6B6355] bg-[#F0ECE4] px-1.5 py-0.5 rounded">
+          <span className="text-[10px] font-semibold text-[#A1A1AA] bg-[#3F3F46] px-1.5 py-0.5 rounded">
             {categories.length}
           </span>
         </div>
@@ -66,12 +66,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
             onClick={() => onSelectCategory(null)}
             className={`w-full px-3 py-2 rounded-lg text-xs font-medium flex items-center justify-between transition-all ${
               selectedCategory === null
-                ? 'bg-[#E1F5EE] border border-[#9FE1CB] text-[#1D9E75] font-semibold shadow-2xs'
-                : 'hover:bg-[#F0ECE4] text-[#2C2820]'
+                ? 'bg-[rgba(0,229,95,0.12)] border border-[#008A39] text-[#00E55F] font-semibold shadow-2xs'
+                : 'hover:bg-[#3F3F46] text-[#FFFFFF]'
             }`}
           >
             <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#1D9E75]" />
+              <span className="w-2.5 h-2.5 rounded-full bg-[#00E55F]" />
               <span>All Expenses</span>
             </div>
             <span className="font-semibold">৳{totalSpent.toLocaleString('en-BD')}</span>
@@ -91,8 +91,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   onClick={() => onSelectCategory(cat.id)}
                   className={`w-full px-3 py-2 rounded-lg text-xs flex flex-col gap-1 transition-all ${
                     isActive
-                      ? 'bg-[#E1F5EE] border border-[#9FE1CB] text-[#1D9E75] font-semibold shadow-2xs'
-                      : 'hover:bg-[#F0ECE4] text-[#2C2820]'
+                      ? 'bg-[rgba(0,229,95,0.12)] border border-[#008A39] text-[#00E55F] font-semibold shadow-2xs'
+                      : 'hover:bg-[#3F3F46] text-[#FFFFFF]'
                   }`}
                 >
                   <div className="flex items-center justify-between w-full">
@@ -103,13 +103,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
                       />
                       <span className="truncate">{cat.name}</span>
                     </div>
-                    <span className="font-medium shrink-0 text-[#6B6355]">
+                    <span className="font-medium shrink-0 text-[#A1A1AA]">
                       ৳{spent.toLocaleString('en-BD')}
                     </span>
                   </div>
 
                   {/* Thin 3px Budget Progress Bar */}
-                  <div className="w-full h-[3px] bg-[#F0ECE4] rounded-full overflow-hidden mt-0.5">
+                  <div className="w-full h-[3px] bg-[#3F3F46] rounded-full overflow-hidden mt-0.5">
                     <div
                       className="h-full transition-all duration-500 rounded-full"
                       style={{
@@ -126,21 +126,21 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* SECTION 2: MONTHLY BUDGET */}
-      <div className="flex flex-col gap-2 pt-4 border-t border-[rgba(0,0,0,0.08)]">
-        <span className="text-[10px] font-bold text-[#A8A090] tracking-widest uppercase flex items-center gap-1 px-1">
-          <PieChart className="w-3 h-3 text-[#BA7517]" />
+      <div className="flex flex-col gap-2 pt-4 border-t border-[rgba(255,255,255,0.08)]">
+        <span className="text-[10px] font-bold text-[#71717A] tracking-widest uppercase flex items-center gap-1 px-1">
+          <PieChart className="w-3 h-3 text-[#F5A623]" />
           Monthly Budget
         </span>
 
-        <div className="bg-[#F7F4EF] p-3.5 rounded-xl border border-[rgba(0,0,0,0.08)] flex flex-col gap-2">
+        <div className="bg-[#09090B] p-3.5 rounded-xl border border-[rgba(255,255,255,0.08)] flex flex-col gap-2">
           <div className="flex justify-between items-baseline text-xs">
-            <span className="text-[#6B6355] font-medium">Spent vs Budget</span>
-            <span className="font-bold text-[#2C2820]">
+            <span className="text-[#A1A1AA] font-medium">Spent vs Budget</span>
+            <span className="font-bold text-[#FFFFFF]">
               ৳{totalSpent.toLocaleString('en-BD')} / ৳{monthlyBudgetLimit.toLocaleString('en-BD')}
             </span>
           </div>
 
-          <div className="w-full h-2 bg-[#F0ECE4] rounded-full overflow-hidden">
+          <div className="w-full h-2 bg-[#3F3F46] rounded-full overflow-hidden">
             <div
               className="h-full transition-all duration-500 rounded-full"
               style={{
@@ -150,10 +150,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
             />
           </div>
 
-          <div className="flex justify-between items-center text-[11px] pt-0.5 text-[#6B6355]">
+          <div className="flex justify-between items-center text-[11px] pt-0.5 text-[#A1A1AA]">
             <span>{budgetPercent}% used</span>
             <span
-              className={budgetRemaining >= 0 ? 'text-[#1D9E75] font-semibold' : 'text-[#D85A30] font-semibold'}
+              className={budgetRemaining >= 0 ? 'text-[#00E55F] font-semibold' : 'text-[#FF6B57] font-semibold'}
             >
               {budgetRemaining >= 0 ? `৳${budgetRemaining.toLocaleString('en-BD')} left` : 'Over Budget!'}
             </span>
@@ -162,26 +162,26 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* SECTION 3: QUICK STATS */}
-      <div className="flex flex-col gap-2 pt-4 border-t border-[rgba(0,0,0,0.08)]">
-        <span className="text-[10px] font-bold text-[#A8A090] tracking-widest uppercase flex items-center gap-1 px-1">
-          <TrendingUp className="w-3 h-3 text-[#2B6CB0]" />
+      <div className="flex flex-col gap-2 pt-4 border-t border-[rgba(255,255,255,0.08)]">
+        <span className="text-[10px] font-bold text-[#71717A] tracking-widest uppercase flex items-center gap-1 px-1">
+          <TrendingUp className="w-3 h-3 text-[#4C8DFF]" />
           Quick Stats
         </span>
 
         <div className="grid grid-cols-1 gap-2 text-xs">
-          <div className="bg-[#F7F4EF] p-2.5 rounded-lg border border-[rgba(0,0,0,0.06)] flex justify-between items-center">
-            <span className="text-[#6B6355]">Daily Average</span>
-            <span className="font-semibold text-[#2C2820]">৳{dailyAverage.toLocaleString('en-BD')}/day</span>
+          <div className="bg-[#09090B] p-2.5 rounded-lg border border-[rgba(255,255,255,0.06)] flex justify-between items-center">
+            <span className="text-[#A1A1AA]">Daily Average</span>
+            <span className="font-semibold text-[#FFFFFF]">৳{dailyAverage.toLocaleString('en-BD')}/day</span>
           </div>
 
-          <div className="bg-[#F7F4EF] p-2.5 rounded-lg border border-[rgba(0,0,0,0.06)] flex justify-between items-center">
-            <span className="text-[#6B6355]">Transactions</span>
-            <span className="font-semibold text-[#2C2820]">{transactions.length} entries</span>
+          <div className="bg-[#09090B] p-2.5 rounded-lg border border-[rgba(255,255,255,0.06)] flex justify-between items-center">
+            <span className="text-[#A1A1AA]">Transactions</span>
+            <span className="font-semibold text-[#FFFFFF]">{transactions.length} entries</span>
           </div>
 
-          <div className="bg-[#F7F4EF] p-2.5 rounded-lg border border-[rgba(0,0,0,0.06)] flex justify-between items-center">
-            <span className="text-[#6B6355]">Highest Spend</span>
-            <span className="font-semibold text-[#D85A30]">৳{highestSpend.toLocaleString('en-BD')}</span>
+          <div className="bg-[#09090B] p-2.5 rounded-lg border border-[rgba(255,255,255,0.06)] flex justify-between items-center">
+            <span className="text-[#A1A1AA]">Highest Spend</span>
+            <span className="font-semibold text-[#FF6B57]">৳{highestSpend.toLocaleString('en-BD')}</span>
           </div>
         </div>
       </div>

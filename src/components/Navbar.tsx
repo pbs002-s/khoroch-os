@@ -26,33 +26,33 @@ export const Navbar: React.FC<NavbarProps> = ({
   ];
 
   return (
-    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[rgba(0,0,0,0.08)] shadow-2xs select-none">
+    <header className="sticky top-0 z-40 bg-[#27272A]/95 backdrop-blur-md border-b border-[rgba(255,255,255,0.08)] shadow-2xs select-none">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-4">
         {/* Brand Logo & Name */}
         <div
           onClick={() => onTabChange('home')}
           className="flex items-center gap-3 cursor-pointer group"
         >
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#1D9E75] to-[#2B6CB0] flex items-center justify-center text-white text-xl shadow-xs group-hover:scale-105 transition-transform shrink-0">
-            💸
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#00E55F] to-[#4C8DFF] flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform shrink-0">
+            <Wallet className="w-5 h-5 text-[#062012]" strokeWidth={2.5} />
           </div>
           <div className="flex flex-col">
             <div className="flex items-center gap-2">
-              <span className="text-lg font-bold font-bn text-[#1D9E75] leading-tight tracking-tight">
-                টাকার হিসাব
+              <span className="text-lg font-bold text-[#FFFFFF] leading-tight tracking-tight">
+                TAKA
               </span>
-              <span className="hidden sm:inline-block px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#E1F5EE] text-[#1D9E75] border border-[#9FE1CB]/50">
+              <span className="hidden sm:inline-block px-2 py-0.5 rounded-full text-[10px] font-mono-label uppercase bg-[rgba(0,229,95,0.12)] text-[#00E55F] border border-[#008A39]/50">
                 BD Student Finance
               </span>
             </div>
-            <span className="text-[11px] font-medium text-[#6B6355]">
+            <span className="text-[11px] font-medium text-[#A1A1AA]">
               {currentMonthYear} Tracker
             </span>
           </div>
         </div>
 
         {/* Desktop & Tablet Navigation Links */}
-        <nav className="hidden md:flex items-center gap-1.5 bg-[#F7F4EF] p-1.5 rounded-2xl border border-[rgba(0,0,0,0.06)]">
+        <nav className="hidden md:flex items-center gap-1.5 bg-[#09090B] p-1.5 rounded-2xl border border-[rgba(255,255,255,0.06)]">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
@@ -62,12 +62,12 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onClick={() => onTabChange(item.id)}
                 className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all ${
                   isActive
-                    ? 'bg-white text-[#1D9E75] shadow-xs'
-                    : 'text-[#6B6355] hover:text-[#2C2820] hover:bg-white/50'
+                    ? 'bg-[#27272A] text-[#00E55F] shadow-xs'
+                    : 'text-[#A1A1AA] hover:text-[#FFFFFF] hover:bg-[#27272A]/50'
                 }`}
               >
-                <Icon className={`w-4 h-4 ${isActive ? 'text-[#1D9E75]' : ''}`} />
-                <span className="font-bn">{item.label}</span>
+                <Icon className={`w-4 h-4 ${isActive ? 'text-[#00E55F]' : ''}`} />
+                <span>{item.label}</span>
               </button>
             );
           })}
@@ -77,7 +77,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="flex items-center gap-2">
           <button
             onClick={onOpenExpenseModal}
-            className="px-3 py-2 rounded-xl text-xs font-bold border border-[#D85A30] text-[#D85A30] hover:bg-[#FAECE7] active:scale-95 transition-all flex items-center gap-1.5"
+            className="px-3 py-2 rounded-xl text-xs font-bold border border-[#FF6B57] text-[#FF6B57] hover:bg-[rgba(255,107,87,0.12)] active:scale-95 transition-all flex items-center gap-1.5"
           >
             <Plus className="w-4 h-4 stroke-[2.5]" />
             <span>Add Expense</span>
@@ -85,7 +85,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           <button
             onClick={onOpenIncomeModal}
-            className="px-3.5 py-2 rounded-xl text-xs font-bold bg-[#1D9E75] text-white hover:bg-[#1D9E75]/90 active:scale-95 transition-all flex items-center gap-1.5 shadow-2xs"
+            className="px-3.5 py-2 rounded-xl text-xs font-bold bg-[#00E55F] text-[#062012] hover:bg-[#00E55F]/90 active:scale-95 transition-all flex items-center gap-1.5 shadow-2xs"
           >
             <Plus className="w-4 h-4 stroke-[2.5]" />
             <span>Add Income</span>

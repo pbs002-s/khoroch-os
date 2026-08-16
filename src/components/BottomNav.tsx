@@ -23,7 +23,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({
   ];
 
   return (
-    <nav className="sticky bottom-0 z-40 bg-white border-t border-[rgba(0,0,0,0.08)] shadow-lg px-2 py-1.5 flex items-center justify-around select-none pb-safe">
+    <nav className="sticky bottom-0 z-40 bg-[#27272A] border-t border-[rgba(255,255,255,0.08)] shadow-lg px-2 py-1.5 flex items-center justify-around select-none pb-safe">
       {navItems.map((item) => {
         const Icon = item.icon;
         const isActive = activeTab === item.id;
@@ -34,23 +34,23 @@ export const BottomNav: React.FC<BottomNavProps> = ({
             onClick={() => onTabChange(item.id)}
             className={`flex flex-col items-center justify-center py-1 px-3 rounded-2xl transition-all relative ${
               isActive
-                ? 'text-[#1D9E75] font-bold scale-105'
-                : 'text-[#6B6355] font-medium hover:text-[#2C2820]'
+                ? 'text-[#00E55F] font-bold scale-105'
+                : 'text-[#A1A1AA] font-medium hover:text-[#FFFFFF]'
             }`}
           >
             {/* Active Pill Indicator */}
             {isActive && (
-              <span className="absolute inset-0 bg-[#E1F5EE] rounded-2xl -z-10 animate-slide-in" />
+              <span className="absolute inset-0 bg-[rgba(0,229,95,0.12)] rounded-2xl -z-10 animate-slide-in" />
             )}
 
             <div className="relative">
               <Icon className={`w-5 h-5 ${isActive ? 'stroke-[2.5]' : 'stroke-2'}`} />
               {item.badge && (
-                <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[#D85A30] rounded-full ring-2 ring-white animate-pulse" />
+                <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[#FF6B57] rounded-full ring-2 ring-[#27272A] animate-pulse" />
               )}
             </div>
 
-            <span className="text-[10px] tracking-tight mt-1 font-bn">
+            <span className="text-[10px] tracking-wide mt-1 font-mono-label uppercase">
               {item.label}
             </span>
           </button>

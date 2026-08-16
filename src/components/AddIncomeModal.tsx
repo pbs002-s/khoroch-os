@@ -37,7 +37,7 @@ export const AddIncomeModal: React.FC<AddIncomeModalProps> = ({
       note,
     });
 
-    onShowToast(`Income of ৳${amount} logged 🎉 ✓`);
+    onShowToast(`Income of ৳${amount} logged`);
     setDesc('');
     setAmount('');
     setNote('');
@@ -46,15 +46,15 @@ export const AddIncomeModal: React.FC<AddIncomeModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/45 backdrop-blur-xs flex items-center justify-center p-4 animate-slide-in">
-      <div className="bg-white w-full max-w-md rounded-2xl p-6 shadow-md border border-[rgba(0,0,0,0.13)] flex flex-col gap-4">
+      <div className="bg-[#27272A] w-full max-w-md rounded-2xl p-6 shadow-md border border-[rgba(255,255,255,0.13)] flex flex-col gap-4">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-[rgba(0,0,0,0.08)] pb-3">
-          <span className="text-base font-bold text-[#2C2820] font-serif-display">
+        <div className="flex items-center justify-between border-b border-[rgba(255,255,255,0.08)] pb-3">
+          <span className="text-base font-bold text-[#FFFFFF] font-serif-display">
             Add Income Entry
           </span>
           <button
             onClick={onClose}
-            className="p-1 rounded-lg text-[#A8A090] hover:text-[#2C2820] hover:bg-[#F0ECE4] transition-all"
+            className="p-1 rounded-lg text-[#71717A] hover:text-[#FFFFFF] hover:bg-[#3F3F46] transition-all"
           >
             <X className="w-5 h-5" />
           </button>
@@ -63,13 +63,13 @@ export const AddIncomeModal: React.FC<AddIncomeModalProps> = ({
         {/* Form */}
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
           <div>
-            <label className="text-[10px] font-bold text-[#A8A090] uppercase block mb-1">
+            <label className="text-[10px] font-mono-label text-[#71717A] uppercase block mb-1">
               Income Source
             </label>
             <select
               value={source}
               onChange={(e) => setSource(e.target.value)}
-              className="w-full px-3 py-2 text-xs rounded-xl border border-[rgba(0,0,0,0.13)] bg-[#F7F4EF] focus:outline-none focus:border-[#1D9E75]"
+              className="w-full px-3 py-2 text-xs rounded-xl border border-[rgba(255,255,255,0.13)] bg-[#09090B] focus:outline-none focus:border-[#00E55F]"
             >
               {INCOME_SOURCES.map((s) => (
                 <option key={s} value={s}>
@@ -80,7 +80,7 @@ export const AddIncomeModal: React.FC<AddIncomeModalProps> = ({
           </div>
 
           <div>
-            <label className="text-[10px] font-bold text-[#A8A090] uppercase block mb-1">
+            <label className="text-[10px] font-mono-label text-[#71717A] uppercase block mb-1">
               Title / Description
             </label>
             <input
@@ -88,13 +88,13 @@ export const AddIncomeModal: React.FC<AddIncomeModalProps> = ({
               placeholder="e.g. Monthly Allowance or Physics Tuition"
               value={desc}
               onChange={(e) => setDesc(e.target.value)}
-              className="w-full px-3 py-2 text-xs rounded-xl border border-[rgba(0,0,0,0.13)] bg-[#F7F4EF] focus:outline-none focus:border-[#1D9E75]"
+              className="w-full px-3 py-2 text-xs rounded-xl border border-[rgba(255,255,255,0.13)] bg-[#09090B] focus:outline-none focus:border-[#00E55F]"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-[10px] font-bold text-[#A8A090] uppercase block mb-1">
+              <label className="text-[10px] font-mono-label text-[#71717A] uppercase block mb-1">
                 Amount (৳)
               </label>
               <input
@@ -102,27 +102,27 @@ export const AddIncomeModal: React.FC<AddIncomeModalProps> = ({
                 placeholder="e.g. 5000"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                className="w-full px-3 py-2 text-xs rounded-xl border border-[rgba(0,0,0,0.13)] bg-[#F7F4EF] focus:outline-none focus:border-[#1D9E75]"
+                className="w-full px-3 py-2 text-xs rounded-xl border border-[rgba(255,255,255,0.13)] bg-[#09090B] focus:outline-none focus:border-[#00E55F]"
                 required
               />
             </div>
 
             <div>
-              <label className="text-[10px] font-bold text-[#A8A090] uppercase block mb-1">
+              <label className="text-[10px] font-mono-label text-[#71717A] uppercase block mb-1">
                 Date
               </label>
               <input
                 type="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                className="w-full px-3 py-2 text-xs rounded-xl border border-[rgba(0,0,0,0.13)] bg-[#F7F4EF] focus:outline-none focus:border-[#1D9E75]"
+                className="w-full px-3 py-2 text-xs rounded-xl border border-[rgba(255,255,255,0.13)] bg-[#09090B] focus:outline-none focus:border-[#00E55F]"
                 required
               />
             </div>
           </div>
 
           <div>
-            <label className="text-[10px] font-bold text-[#A8A090] uppercase block mb-1">
+            <label className="text-[10px] font-mono-label text-[#71717A] uppercase block mb-1">
               Note (Optional)
             </label>
             <input
@@ -130,22 +130,22 @@ export const AddIncomeModal: React.FC<AddIncomeModalProps> = ({
               placeholder="e.g. Received via Bank transfer"
               value={note}
               onChange={(e) => setNote(e.target.value)}
-              className="w-full px-3 py-2 text-xs rounded-xl border border-[rgba(0,0,0,0.13)] bg-[#F7F4EF] focus:outline-none focus:border-[#1D9E75]"
+              className="w-full px-3 py-2 text-xs rounded-xl border border-[rgba(255,255,255,0.13)] bg-[#09090B] focus:outline-none focus:border-[#00E55F]"
             />
           </div>
 
           {/* Action Buttons */}
-          <div className="flex items-center justify-end gap-2 pt-2 border-t border-[rgba(0,0,0,0.08)]">
+          <div className="flex items-center justify-end gap-2 pt-2 border-t border-[rgba(255,255,255,0.08)]">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-xl text-xs font-semibold text-[#6B6355] hover:bg-[#F0ECE4] transition-all"
+              className="px-4 py-2 rounded-xl text-xs font-semibold text-[#A1A1AA] hover:bg-[#3F3F46] transition-all"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-5 py-2 rounded-xl text-xs font-semibold bg-[#1D9E75] text-white hover:bg-[#1D9E75]/90 transition-all shadow-xs"
+              className="px-5 py-2 rounded-xl text-xs font-semibold bg-[#00E55F] text-[#062012] hover:bg-[#00E55F]/90 transition-all shadow-xs"
             >
               Save Income
             </button>

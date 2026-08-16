@@ -3,9 +3,9 @@ export type TransactionType = 'income' | 'expense';
 export interface Category {
   id: string;
   name: string;
-  emoji: string;
+  icon: string;
   color: string;
-  budget: number; // Monthly budget in BDT ৳
+  budget: number; // Monthly budget in BDT
 }
 
 export interface Transaction {
@@ -30,7 +30,7 @@ export interface PartnerPreset {
   id: string;
   name: string;
   price: number;
-  emoji: string;
+  icon: string;
 }
 
 export interface GamingEntry {

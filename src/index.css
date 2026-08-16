@@ -1,44 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap');
 
 :root {
-  --bg: #F7F4EF;
-  --surface: #FFFFFF;
-  --surface2: #F0ECE4;
-  --border: rgba(0, 0, 0, 0.08);
-  --border2: rgba(0, 0, 0, 0.13);
-  --text: #2C2820;
-  --text2: #6B6355;
-  --text3: #A8A090;
-  
-  --teal: #1D9E75;
-  --teal-light: #E1F5EE;
-  --teal-mid: #9FE1CB;
-  
-  --amber: #BA7517;
-  --amber-light: #FAEEDA;
-  --amber-mid: #FAC775;
-  
-  --coral: #D85A30;
-  --coral-light: #FAECE7;
-  
-  --purple: #534AB7;
-  --purple-light: #EEEDFE;
-  --purple-mid: #AFA9EC;
-  
-  --red: #A32D2D;
-  --red-light: #FCEBEB;
-  
-  --radius: 14px;
-  --radius-sm: 8px;
-  --shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-  --shadow-md: 0 4px 24px rgba(0, 0, 0, 0.10);
+  /* Financial SaaS Platform Metrics theme */
+  --bg: #09090B;
+  --surface: #27272A;
+  --surface2: #3F3F46;
+  --border: rgba(255, 255, 255, 0.08);
+  --border2: rgba(255, 255, 255, 0.14);
+  --text: #FFFFFF;
+  --text2: #A1A1AA;
+  --text3: #71717A;
+
+  --teal: #00E55F;
+  --teal-light: rgba(0, 229, 95, 0.12);
+  --teal-mid: #008A39;
+
+  --amber: #F5A623;
+  --amber-light: rgba(245, 166, 35, 0.12);
+  --amber-mid: #FBC760;
+
+  --coral: #FF6B57;
+  --coral-light: rgba(255, 107, 87, 0.12);
+
+  --purple: #8B7FF5;
+  --purple-light: rgba(139, 127, 245, 0.12);
+  --purple-mid: #B4ADF7;
+
+  --red: #EF4444;
+  --red-light: rgba(239, 68, 68, 0.12);
+
+  --primary: #00E55F;
+  --accent: #008A39;
+
+  --radius: 15px;
+  --radius-sm: 10px;
+  --shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 8px 28px rgba(0, 0, 0, 0.5);
 }
 
 body {
   background-color: var(--bg);
   color: var(--text);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Hind Siliguri', sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   -webkit-font-smoothing: antialiased;
   margin: 0;
   padding: 0;
@@ -48,11 +52,15 @@ body {
 }
 
 .font-serif-display {
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-weight: 500;
+  letter-spacing: 0;
 }
 
-.font-bn {
-  font-family: 'Hind Siliguri', 'Inter', sans-serif;
+.font-mono-label {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
@@ -62,8 +70,8 @@ body {
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .no-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 /* Smooth Scrolling & Touch Tweaks */
@@ -83,12 +91,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.25);
+  background: rgba(255, 255, 255, 0.25);
 }
 
 /* Keyframe Animations */
@@ -159,4 +167,21 @@ body {
 /* Android Navigation Bar Safe Area */
 .pb-safe {
   padding-bottom: max(16px, env(safe-area-inset-bottom));
+}
+
+/* App credit footer */
+.app-credit {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--text3);
+}
+
+.app-credit a {
+  color: var(--teal);
+  text-decoration: none;
+}
+
+.app-credit a:hover {
+  text-decoration: underline;
 }

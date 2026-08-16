@@ -23,10 +23,10 @@ export const FAB: React.FC<FABProps> = ({
               setIsOpen(false);
               onOpenIncomeModal();
             }}
-            className="flex items-center gap-2 px-3.5 py-2 rounded-full bg-[#1D9E75] text-white text-xs font-bold shadow-md hover:bg-[#1D9E75]/90 active:scale-95 transition-all"
+            className="flex items-center gap-2 px-3.5 py-2 rounded-full bg-[#00E55F] text-[#062012] text-xs font-bold shadow-md hover:bg-[#00E55F]/90 active:scale-95 transition-all"
           >
             <span>+ Add Income</span>
-            <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+            <div className="w-6 h-6 rounded-full bg-[#27272A]/20 flex items-center justify-center">
               <ArrowDownLeft className="w-3.5 h-3.5 text-white" />
             </div>
           </button>
@@ -37,10 +37,10 @@ export const FAB: React.FC<FABProps> = ({
               setIsOpen(false);
               onOpenExpenseModal();
             }}
-            className="flex items-center gap-2 px-3.5 py-2 rounded-full bg-[#D85A30] text-white text-xs font-bold shadow-md hover:bg-[#D85A30]/90 active:scale-95 transition-all"
+            className="flex items-center gap-2 px-3.5 py-2 rounded-full bg-[#FF6B57] text-white text-xs font-bold shadow-md hover:bg-[#FF6B57]/90 active:scale-95 transition-all"
           >
             <span>- Add Expense</span>
-            <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+            <div className="w-6 h-6 rounded-full bg-[#27272A]/20 flex items-center justify-center">
               <ArrowUpRight className="w-3.5 h-3.5 text-white" />
             </div>
           </button>
@@ -51,7 +51,7 @@ export const FAB: React.FC<FABProps> = ({
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={`w-13 h-13 rounded-full flex items-center justify-center text-white shadow-lg active:scale-95 transition-all duration-300 ${
-          isOpen ? 'bg-[#2C2820] rotate-45' : 'bg-gradient-to-tr from-[#1D9E75] to-[#2B6CB0]'
+          isOpen ? 'bg-[#3F3F46] rotate-45' : 'bg-gradient-to-tr from-[#00E55F] to-[#4C8DFF]'
         }`}
         title="Add Transaction"
       >

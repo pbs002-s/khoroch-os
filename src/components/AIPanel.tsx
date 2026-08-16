@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { RoxiMessage, Transaction } from '../types';
-import { Send, Bot, Sparkles, MessageSquare, AlertCircle } from 'lucide-react';
+import { Send, Bot, Sparkles, MessageSquare, AlertCircle, PieChart, PiggyBank, Coffee, HelpCircle } from 'lucide-react';
 
 interface AIPanelProps {
   transactions: Transaction[];
@@ -47,17 +47,17 @@ export const AIPanel: React.FC<AIPanelProps> = ({
   const remainingBudget = monthlyBudgetLimit - totalExpense;
 
   const quickPrompts = [
-    '📊 Monthly Budget Status',
-    '💡 Savings Advice',
-    '☕ Daily Expenses Check',
-    '❓ Check Current Balance',
+    { icon: PieChart, label: 'Monthly Budget Status' },
+    { icon: PiggyBank, label: 'Savings Advice' },
+    { icon: Coffee, label: 'Daily Expenses Check' },
+    { icon: HelpCircle, label: 'Check Current Balance' },
   ];
 
   // Smart local advisor response generator
   const generateAIResponse = (userQuery: string): string => {
     const q = userQuery.toLowerCase();
 
-    if (q.includes('টাকা শেষ') || q.includes('out of money') || q.includes('low balance')) {
+    if (q.includes('out of money') || q.includes('low balance')) {
       return `Your current balance is ৳${currentBalance.toLocaleString('en-BD')}.\n\nTips to manage low balance:\n1. Limit dining out and non-essential shopping.\n2. Prioritize essential bills and dining costs.\n3. Keep track of daily small cash expenses.`;
     }
 
@@ -65,8 +65,8 @@ export const AIPanel: React.FC<AIPanelProps> = ({
       const percentUsed = Math.round((totalExpense / monthlyBudgetLimit) * 100);
       return `Here is your current budget status:\n\n• Total Income: ৳${totalIncome.toLocaleString('en-BD')}\n• Total Expense: ৳${totalExpense.toLocaleString('en-BD')}\n• Budget Used: ${percentUsed}%\n• Remaining Budget: ৳${remainingBudget.toLocaleString('en-BD')}\n\n${
         percentUsed > 80
-          ? '⚠️ You have used over 80% of your monthly budget limit. Consider slowing down expenses.'
-          : '✅ Your spending is within a healthy range.'
+          ? 'Warning: you have used over 80% of your monthly budget limit. Consider slowing down expenses.'
+          : 'Your spending is within a healthy range.'
       }`;
     }
 
@@ -137,36 +137,36 @@ export const AIPanel: React.FC<AIPanelProps> = ({
 
   const containerStyle = isFullTab
     ? 'flex-1 w-full max-w-4xl mx-auto p-4 md:p-6 flex flex-col min-h-[calc(100vh-160px)] pb-24'
-    : 'w-[320px] h-full bg-white border-l border-[rgba(0,0,0,0.08)] flex flex-col overflow-hidden shrink-0 select-none';
+    : 'w-[320px] h-full bg-[#27272A] border-l border-[rgba(255,255,255,0.08)] flex flex-col overflow-hidden shrink-0 select-none';
 
   return (
     <div className={containerStyle}>
       {/* HEADER */}
-      <div className="p-3.5 border border-[rgba(0,0,0,0.08)] bg-white rounded-2xl shadow-2xs flex items-center justify-between mb-3">
+      <div className="p-3.5 border border-[rgba(255,255,255,0.08)] bg-[#27272A] rounded-2xl shadow-2xs flex items-center justify-between mb-3">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#1D9E75] to-[#2B6CB0] flex items-center justify-center text-white text-lg shadow-xs">
-            🤖
+          <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#00E55F] to-[#4C8DFF] flex items-center justify-center shadow-xs">
+            <Bot className="w-5 h-5 text-[#062012]" strokeWidth={2.5} />
           </div>
           <div className="flex flex-col">
             <div className="flex items-center gap-2">
-              <span className="text-sm font-bold font-bn text-[#2C2820]">
+              <span className="text-sm font-bold text-[#FFFFFF]">
                 Finance AI Assistant
               </span>
-              <span className="w-2 h-2 rounded-full bg-[#1D9E75] animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-[#00E55F] animate-pulse" />
             </div>
-            <span className="text-[10px] text-[#6B6355] font-medium">
+            <span className="text-[10px] text-[#A1A1AA] font-medium">
               Smart Money & Budget Guide
             </span>
           </div>
         </div>
 
-        <div className="text-[10px] font-bold bg-[#E1F5EE] text-[#1D9E75] px-2.5 py-1 rounded-full">
+        <div className="text-[10px] font-bold bg-[rgba(0,229,95,0.12)] text-[#00E55F] px-2.5 py-1 rounded-full">
           ৳{currentBalance.toLocaleString('en-BD')} Bal
         </div>
       </div>
 
       {/* MESSAGES BOX */}
-      <div className="flex-1 p-3.5 bg-white border border-[rgba(0,0,0,0.08)] rounded-2xl shadow-2xs overflow-y-auto scroll-touch flex flex-col gap-3 mb-3">
+      <div className="flex-1 p-3.5 bg-[#27272A] border border-[rgba(255,255,255,0.08)] rounded-2xl shadow-2xs overflow-y-auto scroll-touch flex flex-col gap-3 mb-3">
         {messages.map((msg) => {
           const isAI = msg.sender === 'ai';
           return (
@@ -177,10 +177,10 @@ export const AIPanel: React.FC<AIPanelProps> = ({
               }`}
             >
               <div
-                className={`p-3 rounded-2xl text-xs leading-relaxed font-bn ${
+                className={`p-3 rounded-2xl text-xs leading-relaxed ${
                   isAI
-                    ? 'bg-[#EEEDFE] text-[#2C2820] rounded-tl-xs border border-[#AFA9EC]/40'
-                    : 'bg-[#E1F5EE] text-[#2C2820] rounded-tr-xs border border-[#9FE1CB]/40 font-medium'
+                    ? 'bg-[rgba(139,127,245,0.12)] text-[#FFFFFF] rounded-tl-xs border border-[#B4ADF7]/40'
+                    : 'bg-[rgba(0,229,95,0.12)] text-[#FFFFFF] rounded-tr-xs border border-[#008A39]/40 font-medium'
                 }`}
               >
                 {msg.text.split('\n').map((line, i) => (
@@ -189,33 +189,37 @@ export const AIPanel: React.FC<AIPanelProps> = ({
                   </p>
                 ))}
               </div>
-              <span className="text-[9px] text-[#A8A090] px-1">{msg.timestamp}</span>
+              <span className="text-[9px] text-[#71717A] px-1">{msg.timestamp}</span>
             </div>
           );
         })}
 
         {isTyping && (
-          <div className="self-start flex items-center gap-1.5 p-3 rounded-2xl bg-[#EEEDFE] text-[#534AB7]">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#534AB7] typing-dot-1" />
-            <span className="w-1.5 h-1.5 rounded-full bg-[#534AB7] typing-dot-2" />
-            <span className="w-1.5 h-1.5 rounded-full bg-[#534AB7] typing-dot-3" />
+          <div className="self-start flex items-center gap-1.5 p-3 rounded-2xl bg-[rgba(139,127,245,0.12)] text-[#8B7FF5]">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#8B7FF5] typing-dot-1" />
+            <span className="w-1.5 h-1.5 rounded-full bg-[#8B7FF5] typing-dot-2" />
+            <span className="w-1.5 h-1.5 rounded-full bg-[#8B7FF5] typing-dot-3" />
           </div>
         )}
         <div ref={messagesEndRef} />
       </div>
 
       {/* QUICK PROMPTS & INPUT */}
-      <div className="bg-white p-3 rounded-2xl border border-[rgba(0,0,0,0.08)] shadow-2xs flex flex-col gap-2">
+      <div className="bg-[#27272A] p-3 rounded-2xl border border-[rgba(255,255,255,0.08)] shadow-2xs flex flex-col gap-2">
         <div className="grid grid-cols-2 gap-1.5">
-          {quickPrompts.map((prompt, idx) => (
-            <button
-              key={idx}
-              onClick={() => handleSendMessage(prompt)}
-              className="p-2 rounded-xl bg-[#F7F4EF] hover:bg-[#E1F5EE] text-[11px] font-semibold text-[#2C2820] font-bn text-left truncate transition-colors border border-[rgba(0,0,0,0.06)]"
-            >
-              {prompt}
-            </button>
-          ))}
+          {quickPrompts.map((prompt, idx) => {
+            const Icon = prompt.icon;
+            return (
+              <button
+                key={idx}
+                onClick={() => handleSendMessage(prompt.label)}
+                className="p-2 rounded-xl bg-[#09090B] hover:bg-[rgba(0,229,95,0.12)] text-[11px] font-semibold text-[#FFFFFF] text-left truncate transition-colors border border-[rgba(255,255,255,0.06)] flex items-center gap-1.5"
+              >
+                <Icon className="w-3.5 h-3.5 text-[#00E55F] shrink-0" />
+                <span className="truncate">{prompt.label}</span>
+              </button>
+            );
+          })}
         </div>
 
         <form
@@ -230,12 +234,12 @@ export const AIPanel: React.FC<AIPanelProps> = ({
             placeholder="Ask your AI Assistant..."
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
-            className="flex-1 px-3.5 py-2.5 rounded-xl text-xs font-bn border border-[rgba(0,0,0,0.13)] bg-[#F7F4EF] focus:outline-none focus:border-[#1D9E75]"
+            className="flex-1 px-3.5 py-2.5 rounded-xl text-xs border border-[rgba(255,255,255,0.13)] bg-[#09090B] focus:outline-none focus:border-[#00E55F]"
           />
           <button
             type="submit"
             disabled={!inputMessage.trim()}
-            className="w-9 h-9 rounded-xl bg-[#1D9E75] text-white flex items-center justify-center hover:bg-[#1D9E75]/90 disabled:opacity-40 transition-all shrink-0 shadow-2xs"
+            className="w-9 h-9 rounded-xl bg-[#00E55F] text-[#062012] flex items-center justify-center hover:bg-[#00E55F]/90 disabled:opacity-40 transition-all shrink-0 shadow-2xs"
           >
             <Send className="w-4 h-4" />
           </button>
