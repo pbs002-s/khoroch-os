@@ -21,23 +21,73 @@ export const CATEGORIES: Category[] = [
 ];
 
 export const ESSENTIAL_PRESETS: EssentialPreset[] = [
-  { id: '1', name: 'Benson & Hedges', price: 23, category: 'essentials' },
-  { id: '2', name: 'Gold Leaf', price: 18, category: 'essentials' },
-  { id: '3', name: 'Marlboro Light', price: 23, category: 'essentials' },
-  { id: '4', name: 'Lucky Strike', price: 12, category: 'essentials' },
+  { id: '1', name: 'Marlboro Advance', price: 23, category: 'essentials' },
+  { id: '2', name: 'Camel (Yellow/Blue)', price: 16, category: 'essentials' },
+  { id: '3', name: 'Benson & Hedges', price: 23, category: 'essentials' },
+  { id: '4', name: 'Gold Leaf', price: 18, category: 'essentials' },
   { id: '5', name: 'Dunhill Switch', price: 25, category: 'essentials' },
-  { id: '6', name: 'Star Filter', price: 10, category: 'essentials' },
+  { id: '6', name: 'Lucky Strike', price: 12, category: 'essentials' },
   { id: '7', name: 'Hot Milk Tea', price: 15, category: 'tea' },
-  { id: '8', name: 'Espresso Coffee', price: 40, category: 'tea' },
+  { id: '8', name: 'Raw / Lemon Tea', price: 8, category: 'tea' },
 ];
 
 export const PARTNER_PRESETS: PartnerPreset[] = [
-  { id: 'p1', name: 'Ice Cream Treat', price: 180, icon: 'IceCream' },
-  { id: 'p2', name: 'Restaurant Dinner', price: 850, icon: 'UtensilsCrossed' },
-  { id: 'p3', name: 'Weekend Hangout', price: 450, icon: 'Popcorn' },
-  { id: 'p4', name: 'Tour / Outing Fund', price: 1500, icon: 'Palmtree' },
-  { id: 'p5', name: 'Surprise Flowers', price: 250, icon: 'Flower2' },
-  { id: 'p6', name: 'Special Cafe Coffee', price: 120, icon: 'Coffee' },
+  { 
+    id: 'p1', 
+    name: 'TSC Ice Cream & Philosophical Convos', 
+    price: 180, 
+    icon: 'IceCream',
+    tagline: 'Sharing 1 Cornetto & pretending to understand life',
+  },
+  { 
+    id: 'p2', 
+    name: 'Dhanmondi Lake Fuska & Jhalmuri Date', 
+    price: 160, 
+    icon: 'UtensilsCrossed',
+    tagline: 'Extra tok, extra love, zero digestive regrets',
+  },
+  { 
+    id: 'p3', 
+    name: 'Aesthetic Cafe Date (Story Obligatory)', 
+    price: 850, 
+    icon: 'Coffee',
+    tagline: 'Taking 45 photos while the iced latte gets warm',
+  },
+  { 
+    id: 'p4', 
+    name: 'Rainy Day Shared Rickshaw Hood-Down Ride', 
+    price: 280, 
+    icon: 'Heart',
+    tagline: 'Bollywood slow-mo song scene in Dhaka traffic',
+  },
+  { 
+    id: 'p5', 
+    name: 'Apology Peace Treaty (Boba + Brownie)', 
+    price: 420, 
+    icon: 'Popcorn',
+    tagline: 'Because she said "It\'s fine" with THAT specific tone',
+  },
+  { 
+    id: 'p6', 
+    name: 'Midnight Pizza (She Said Not Hungry)', 
+    price: 680, 
+    icon: 'UtensilsCrossed',
+    tagline: '"I\'ll only take 1 bite" -> finishes half the pizza',
+  },
+  { 
+    id: 'p7', 
+    name: 'Surprise Beli Phul & Chocolates (+100 Aura)', 
+    price: 250, 
+    icon: 'Flower2',
+    tagline: 'Instant relationship status booster & mood fixer',
+  },
+  { 
+    id: 'p8', 
+    name: 'Dreaming Sajek / Cox\'s Bazar Trip Fund', 
+    price: 2500, 
+    icon: 'Palmtree',
+    tagline: 'Planning luxury honeymoon on private tuition salary',
+  },
 ];
 
 export const INCOME_SOURCES = [

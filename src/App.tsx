@@ -1,44 +1,43 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Transaction } from './types';
 import { CATEGORIES, SEED_TRANSACTIONS } from './constants/categories';
 import { Navbar } from './components/Navbar';
+import { Sidebar } from './components/Sidebar';
 import { BottomNav, NavTab } from './components/BottomNav';
 import { FAB } from './components/FAB';
-import { DashboardTab } from './components/DashboardTab';
-import { ToolsTab } from './components/ToolsTab';
+import { BentoDashboard } from './components/BentoDashboard';
+import { CigaretteSmartSuggestion } from './components/CigaretteSmartSuggestion';
+import { RomanceTab } from './components/RomanceTab';
 import { TransactionsTab } from './components/TransactionsTab';
 import { AIPanel } from './components/AIPanel';
 import { SettingsTab } from './components/SettingsTab';
 import { AddExpenseModal } from './components/AddExpenseModal';
 import { AddIncomeModal } from './components/AddIncomeModal';
 import { Toast } from './components/Toast';
-import { motion, AnimatePresence } from 'motion/react';
-
-const TABS: NavTab[] = ['home', 'tools', 'txns', 'ai', 'settings'];
+import { X } from 'lucide-react';
 
 export default function App() {
-  // 1. Transactions State: Persisted under key 'txns'.
+  // 1. Transactions State (Persisted under key 'txns')
   const [transactions, setTransactions] = useState<Transaction[]>(() => {
     try {
       const saved = localStorage.getItem('txns');
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed)) return parsed;
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
       }
     } catch (e) {
       console.warn('Failed to parse txns from localStorage', e);
     }
-    return []; // Clean ready-to-use website state
+    return SEED_TRANSACTIONS;
   });
 
-  // 2. Active Tab State ('home' | 'tools' | 'txns' | 'ai' | 'settings')
+  // 2. Active Tab State ('home' | 'cgrt' | 'romance' | 'txns' | 'ai' | 'settings')
   const [activeTab, setActiveTab] = useState<NavTab>('home');
-  const [slideDirection, setSlideDirection] = useState<'left' | 'right'>('right');
 
   // Selected Category filter state
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-  // Monthly Budget limit state (persisted in localStorage as well)
+  // Monthly Budget limit state (persisted in localStorage)
   const [monthlyBudgetLimit, setMonthlyBudgetLimit] = useState<number>(() => {
     try {
       const saved = localStorage.getItem('monthly_budget_limit');
@@ -50,16 +49,16 @@ export default function App() {
     return 20000;
   });
 
+  // Sidebar collapse state
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+
   // Modals state
   const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
   const [isIncomeModalOpen, setIsIncomeModalOpen] = useState(false);
 
   // Toast notification state
   const [toastMessage, setToastMessage] = useState<string | null>(null);
-
-  // Touch Swipe Gesture State
-  const touchStartX = useRef<number | null>(null);
-  const touchStartY = useRef<number | null>(null);
 
   // Sync transactions to localStorage
   useEffect(() => {
@@ -76,49 +75,6 @@ export default function App() {
       localStorage.setItem('monthly_budget_limit', monthlyBudgetLimit.toString());
     } catch (e) {}
   }, [monthlyBudgetLimit]);
-
-  // Change tab with slide direction animation
-  const handleTabChange = (newTab: NavTab) => {
-    const oldIdx = TABS.indexOf(activeTab);
-    const newIdx = TABS.indexOf(newTab);
-    if (newIdx > oldIdx) {
-      setSlideDirection('right');
-    } else {
-      setSlideDirection('left');
-    }
-    setActiveTab(newTab);
-  };
-
-  // Touch handlers for horizontal swiping between tabs
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
-    touchStartY.current = e.touches[0].clientY;
-  };
-
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    if (touchStartX.current === null || touchStartY.current === null) return;
-
-    const touchEndX = e.changedTouches[0].clientX;
-    const touchEndY = e.changedTouches[0].clientY;
-
-    const deltaX = touchEndX - touchStartX.current;
-    const deltaY = touchEndY - touchStartY.current;
-
-    // Only trigger swipe if horizontal movement > 45px and more horizontal than vertical
-    if (Math.abs(deltaX) > 45 && Math.abs(deltaX) > Math.abs(deltaY) * 1.2) {
-      const currentIdx = TABS.indexOf(activeTab);
-      if (deltaX < 0 && currentIdx < TABS.length - 1) {
-        // Swipe left -> Next tab
-        handleTabChange(TABS[currentIdx + 1]);
-      } else if (deltaX > 0 && currentIdx > 0) {
-        // Swipe right -> Previous tab
-        handleTabChange(TABS[currentIdx - 1]);
-      }
-    }
-
-    touchStartX.current = null;
-    touchStartY.current = null;
-  };
 
   // Show Toast helper
   const showToast = (msg: string) => {
@@ -152,146 +108,193 @@ export default function App() {
     setTransactions(SEED_TRANSACTIONS);
   };
 
-  // Format Current Month & Year (e.g. "July 2026")
+  // Format Current Month & Year
   const currentMonthYear = new Date().toLocaleDateString('en-US', {
     month: 'long',
     year: 'numeric',
   });
 
-  // Slide Animation variants
-  const slideVariants = {
-    initial: (dir: 'left' | 'right') => ({
-      x: dir === 'right' ? 60 : -60,
-      opacity: 0,
-    }),
-    animate: {
-      x: 0,
-      opacity: 1,
-      transition: { duration: 0.2, ease: 'easeOut' },
-    },
-    exit: (dir: 'left' | 'right') => ({
-      x: dir === 'right' ? -60 : 60,
-      opacity: 0,
-      transition: { duration: 0.15, ease: 'easeIn' },
-    }),
-  };
-
   return (
-    <div className="min-h-screen bg-[#09090B] text-[#FFFFFF] flex flex-col font-sans selection:bg-[#00E55F]/20 overflow-x-hidden">
-      {/* Top Web Navigation Bar */}
-      <Navbar
-        activeTab={activeTab}
-        onTabChange={handleTabChange}
-        currentMonthYear={currentMonthYear}
-        onOpenExpenseModal={() => setIsExpenseModalOpen(true)}
-        onOpenIncomeModal={() => setIsIncomeModalOpen(true)}
-      />
+    <div className="min-h-screen bg-[#0B0C10] text-[#FFFFFF] flex flex-row font-sans selection:bg-emerald-500/25 selection:text-emerald-300 antialiased overflow-x-hidden relative">
+      {/* ── AMBIENT BACKGROUND GLOW & ANIMATED ORBS ── */}
+      <div className="ambient-bg-glow">
+        <div className="ambient-orb-1" />
+        <div className="ambient-orb-2" />
+        <div className="absolute inset-0 bg-grid-pattern opacity-30 pointer-events-none" />
+      </div>
 
-      {/* Main Website Viewport */}
-      <div className="w-full flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 flex flex-col relative">
-        {/* Mobile Swipe Helper Bar */}
-        <div className="md:hidden mb-3 bg-[rgba(0,229,95,0.12)] border border-[#008A39]/60 px-3 py-1.5 rounded-xl flex items-center justify-between text-[11px] font-mono-label uppercase text-[#00E55F] select-none">
-          <span>Swipe or tap tabs below</span>
-          <div className="flex items-center gap-1">
-            {TABS.map((tab) => (
-              <button
-                key={tab}
-                onClick={() => handleTabChange(tab)}
-                className={`h-1.5 rounded-full transition-all ${
-                  activeTab === tab ? 'w-4 bg-[#00E55F]' : 'w-1.5 bg-[#00E55F]/30'
-                }`}
-                title={`Go to ${tab}`}
-              />
-            ))}
+      {/* 1. Desktop Fixed Sidebar */}
+      <div className="hidden lg:flex shrink-0 h-screen sticky top-0 z-20">
+        <Sidebar
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+          categories={CATEGORIES}
+          transactions={transactions}
+          monthlyBudgetLimit={monthlyBudgetLimit}
+          onOpenExpenseModal={() => setIsExpenseModalOpen(true)}
+          onOpenIncomeModal={() => setIsIncomeModalOpen(true)}
+          isCollapsed={isSidebarCollapsed}
+          onToggleCollapse={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+          selectedCategory={selectedCategory}
+          onSelectCategory={setSelectedCategory}
+        />
+      </div>
+
+      {/* 2. Mobile Slide-over Drawer Backdrop */}
+      {isMobileSidebarOpen && (
+        <div
+          className="lg:hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex"
+          onClick={() => setIsMobileSidebarOpen(false)}
+        >
+          <div
+            className="w-[270px] h-full bg-[#0F1016] border-r border-white/[0.08] shadow-2xl animate-slide-in relative"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setIsMobileSidebarOpen(false)}
+              className="absolute top-4 right-4 p-1.5 rounded-lg text-zinc-400 hover:text-white"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <Sidebar
+              activeTab={activeTab}
+              onTabChange={(tab) => {
+                setActiveTab(tab);
+                setIsMobileSidebarOpen(false);
+              }}
+              categories={CATEGORIES}
+              transactions={transactions}
+              monthlyBudgetLimit={monthlyBudgetLimit}
+              onOpenExpenseModal={() => {
+                setIsMobileSidebarOpen(false);
+                setIsExpenseModalOpen(true);
+              }}
+              onOpenIncomeModal={() => {
+                setIsMobileSidebarOpen(false);
+                setIsIncomeModalOpen(true);
+              }}
+              isCollapsed={false}
+              onToggleCollapse={() => {}}
+              selectedCategory={selectedCategory}
+              onSelectCategory={setSelectedCategory}
+            />
           </div>
         </div>
+      )}
 
-        {/* View Content */}
-        <main
-          className="flex-1 flex flex-col relative w-full"
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
-        >
-          <AnimatePresence mode="wait" custom={slideDirection}>
-            <motion.div
-              key={activeTab}
-              custom={slideDirection}
-              variants={slideVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-              className="flex-1 flex flex-col w-full"
-            >
-              {activeTab === 'home' && (
-                <DashboardTab
-                  categories={CATEGORIES}
-                  transactions={transactions}
-                  selectedCategory={selectedCategory}
-                  onSelectCategory={setSelectedCategory}
-                  monthlyBudgetLimit={monthlyBudgetLimit}
-                  onNavigateToTxns={() => handleTabChange('txns')}
-                  onNavigateToTools={() => handleTabChange('tools')}
-                  onNavigateToAI={() => handleTabChange('ai')}
-                  onNavigateToSettings={() => handleTabChange('settings')}
-                  onOpenExpenseModal={() => setIsExpenseModalOpen(true)}
-                  onOpenIncomeModal={() => setIsIncomeModalOpen(true)}
-                />
-              )}
+      {/* 3. Main Content Container */}
+      <div className="flex-1 flex flex-col min-w-0 min-h-screen relative z-10">
+        {/* Top Clean Navbar */}
+        <Navbar
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+          currentMonthYear={currentMonthYear}
+          onOpenExpenseModal={() => setIsExpenseModalOpen(true)}
+          onOpenIncomeModal={() => setIsIncomeModalOpen(true)}
+          onToggleMobileSidebar={() => setIsMobileSidebarOpen(true)}
+        />
 
-              {activeTab === 'tools' && (
-                <ToolsTab
-                  onAddTransaction={handleAddTransaction}
-                  onShowToast={showToast}
-                  transactions={transactions}
-                />
-              )}
+        {/* Workspace View Area */}
+        <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-6">
+          {/* TAB 1: MINIMAL BENTO DASHBOARD (Core Metrics Only) */}
+          {activeTab === 'home' && (
+            <BentoDashboard
+              categories={CATEGORIES}
+              transactions={transactions}
+              selectedCategory={selectedCategory}
+              onSelectCategory={setSelectedCategory}
+              monthlyBudgetLimit={monthlyBudgetLimit}
+              onNavigateToTxns={() => setActiveTab('txns')}
+              onNavigateToCgrt={() => setActiveTab('cgrt')}
+              onNavigateToRomance={() => setActiveTab('romance')}
+              onNavigateToAI={() => setActiveTab('ai')}
+              onNavigateToSettings={() => setActiveTab('settings')}
+              onOpenExpenseModal={() => setIsExpenseModalOpen(true)}
+              onOpenIncomeModal={() => setIsIncomeModalOpen(true)}
+              onShowToast={showToast}
+              onAddTransaction={handleAddTransaction}
+            />
+          )}
 
-              {activeTab === 'txns' && (
-                <TransactionsTab
-                  categories={CATEGORIES}
-                  transactions={transactions}
-                  onDeleteTransaction={handleDeleteTransaction}
-                  onOpenExpenseModal={() => setIsExpenseModalOpen(true)}
-                  onOpenIncomeModal={() => setIsIncomeModalOpen(true)}
-                  onShowToast={showToast}
-                />
-              )}
+          {/* TAB 2: ESSENTIALS & CIGARETTES SMART HUB */}
+          {activeTab === 'cgrt' && (
+            <div className="flex flex-col gap-4 pb-20 animate-slide-in">
+              <div className="flex flex-col gap-1">
+                <h2 className="text-xl font-bold text-white font-display">
+                  Daily Essentials & Mixed Combos Hub
+                </h2>
+                <p className="text-xs text-zinc-400">
+                  Build multi-brand combos (1 Advance + 2 Camel), calculate daily budget combinations and optimize your burn rate.
+                </p>
+              </div>
 
-              {activeTab === 'ai' && (
-                <AIPanel
-                  transactions={transactions}
-                  monthlyBudgetLimit={monthlyBudgetLimit}
-                  isFullTab={true}
-                />
-              )}
+              <CigaretteSmartSuggestion
+                onAddTransaction={handleAddTransaction}
+                onShowToast={showToast}
+                monthlyBudgetLimit={monthlyBudgetLimit}
+                transactions={transactions}
+              />
+            </div>
+          )}
 
-              {activeTab === 'settings' && (
-                <SettingsTab
-                  categories={CATEGORIES}
-                  transactions={transactions}
-                  monthlyBudgetLimit={monthlyBudgetLimit}
-                  onUpdateMonthlyBudget={setMonthlyBudgetLimit}
-                  onClearAllData={handleClearAllData}
-                  onLoadSampleData={handleLoadSampleData}
-                  onShowToast={showToast}
-                />
-              )}
-            </motion.div>
-          </AnimatePresence>
+          {/* TAB 3: ROMANCE & SOCIAL OUTINGS HUB */}
+          {activeTab === 'romance' && (
+            <RomanceTab
+              transactions={transactions}
+              onAddTransaction={handleAddTransaction}
+              onShowToast={showToast}
+              monthlyBudgetLimit={monthlyBudgetLimit}
+            />
+          )}
+
+          {/* TAB 4: TRANSACTIONS LEDGER */}
+          {activeTab === 'txns' && (
+            <TransactionsTab
+              categories={CATEGORIES}
+              transactions={transactions}
+              onDeleteTransaction={handleDeleteTransaction}
+              onOpenExpenseModal={() => setIsExpenseModalOpen(true)}
+              onOpenIncomeModal={() => setIsIncomeModalOpen(true)}
+              onShowToast={showToast}
+            />
+          )}
+
+          {/* TAB 5: AI FINANCIAL ADVISOR */}
+          {activeTab === 'ai' && (
+            <AIPanel
+              transactions={transactions}
+              monthlyBudgetLimit={monthlyBudgetLimit}
+              isFullTab={true}
+            />
+          )}
+
+          {/* TAB 6: SETTINGS & BUDGETS */}
+          {activeTab === 'settings' && (
+            <SettingsTab
+              categories={CATEGORIES}
+              transactions={transactions}
+              monthlyBudgetLimit={monthlyBudgetLimit}
+              onUpdateMonthlyBudget={setMonthlyBudgetLimit}
+              onClearAllData={handleClearAllData}
+              onLoadSampleData={handleLoadSampleData}
+              onShowToast={showToast}
+            />
+          )}
         </main>
       </div>
 
-      {/* Floating Action Button (Quick Add) */}
+      {/* Floating Action Button (Mobile) */}
       <FAB
         onOpenExpenseModal={() => setIsExpenseModalOpen(true)}
         onOpenIncomeModal={() => setIsIncomeModalOpen(true)}
       />
 
-      {/* Mobile Bottom Navigation (Hidden on desktop md:) */}
-      <div className="md:hidden sticky bottom-0 z-40">
+      {/* Mobile Bottom Nav */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40">
         <BottomNav
           activeTab={activeTab}
-          onTabChange={handleTabChange}
+          onTabChange={setActiveTab}
         />
       </div>
 
