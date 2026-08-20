@@ -87,8 +87,8 @@ Ensure you have **Node.js** (v18 or higher) and **npm** installed.
 
 ```bash
 # Clone the repository
-git clone https://github.com/pbs002-s/financ-tracker.git
-cd financ-tracker
+git clone https://github.com/pbs002-s/khoroch-os.git
+cd khoroch-os
 
 # Install dependencies
 npm install
