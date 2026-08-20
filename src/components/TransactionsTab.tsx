@@ -1,6 +1,18 @@
 import React, { useState } from 'react';
 import { Category, Transaction } from '../types';
-import { Search, Filter, Trash2, ArrowUpRight, ArrowDownLeft, Receipt, Wallet } from 'lucide-react';
+import { 
+  Search, 
+  Filter, 
+  Trash2, 
+  ArrowUpRight, 
+  ArrowDownLeft, 
+  Receipt, 
+  Wallet,
+  Download,
+  Calendar,
+  X,
+  FileSpreadsheet
+} from 'lucide-react';
 import { CategoryIcon } from '../constants/icons';
 
 interface TransactionsTabProps {
@@ -60,130 +72,180 @@ export const TransactionsTab: React.FC<TransactionsTabProps> = ({
     }
   };
 
+  const handleExportCSV = () => {
+    if (filteredTxns.length === 0) {
+      onShowToast('No transactions to export');
+      return;
+    }
+
+    const headers = ['ID', 'Type', 'Description', 'Category/Source', 'Amount (BDT)', 'Date', 'Note'];
+    const rows = filteredTxns.map((t) => [
+      t.id,
+      t.type,
+      `"${t.desc.replace(/"/g, '""')}"`,
+      `"${t.category || t.source || ''}"`,
+      t.amount,
+      t.date,
+      `"${(t.note || '').replace(/"/g, '""')}"`,
+    ]);
+
+    const csvContent = [headers.join(','), ...rows.map((r) => r.join(','))].join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `taka_ledger_${new Date().toISOString().split('T')[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    onShowToast('CSV exported successfully');
+  };
+
   return (
-    <div className="flex-1 w-full max-w-4xl mx-auto p-4 md:p-6 flex flex-col gap-4 pb-24">
+    <div className="w-full flex flex-col gap-4 pb-24 animate-slide-in">
       {/* Header & Quick Action */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h2 className="text-lg font-bold text-[#FFFFFF]">
-            Transaction History
+          <h2 className="text-xl font-bold text-white font-display">
+            Transactions Ledger
           </h2>
-          <p className="text-xs text-[#A1A1AA]">
-            {filteredTxns.length} records found
+          <p className="text-xs text-zinc-400">
+            {filteredTxns.length} records found • Detailed inflow and outflow activity
           </p>
         </div>
 
         <div className="flex items-center gap-2">
           <button
+            onClick={handleExportCSV}
+            className="px-3 py-2 rounded-xl text-xs font-semibold bg-[#181A24] text-zinc-300 border border-white/[0.08] hover:text-white hover:border-white/[0.15] transition-all flex items-center gap-1.5"
+            title="Export CSV"
+          >
+            <FileSpreadsheet className="w-4 h-4 text-emerald-400" />
+            <span className="hidden sm:inline">Export CSV</span>
+          </button>
+
+          <button
             onClick={onOpenIncomeModal}
-            className="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-[#00E55F] text-[#062012] hover:bg-[#00E55F]/90 transition-all shadow-2xs"
+            className="px-3 py-2 rounded-xl text-xs font-bold bg-emerald-500 text-[#041E11] hover:bg-emerald-400 transition-all shadow-sm"
           >
             + Income
           </button>
           <button
             onClick={onOpenExpenseModal}
-            className="px-2.5 py-1.5 rounded-lg text-xs font-bold border border-[#FF6B57] text-[#FF6B57] hover:bg-[rgba(255,107,87,0.12)] transition-all"
+            className="px-3 py-2 rounded-xl text-xs font-semibold bg-rose-500/15 text-rose-300 border border-rose-500/30 hover:bg-rose-500/25 transition-all"
           >
             + Expense
           </button>
         </div>
       </div>
 
-      {/* Search Input */}
-      <div className="relative">
-        <Search className="w-4 h-4 text-[#71717A] absolute left-3 top-1/2 -translate-y-1/2" />
-        <input
-          type="text"
-          placeholder="Search transactions by title, note, or amount..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full pl-9 pr-4 py-2.5 text-xs rounded-xl border border-[rgba(255,255,255,0.13)] bg-[#27272A] focus:outline-none focus:border-[#00E55F]"
-        />
-      </div>
+      {/* Search & Filter Bar */}
+      <div className="bento-card p-4 flex flex-col gap-3 bg-[#12131A]">
+        {/* Search Input */}
+        <div className="relative">
+          <Search className="w-4 h-4 text-zinc-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <input
+            type="text"
+            placeholder="Search by title, category, note, or exact amount..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-10 pr-10 py-2.5 text-xs rounded-xl border border-white/[0.12] bg-[#0E0F15] text-white focus:outline-none focus:border-emerald-500 placeholder:text-zinc-500"
+          />
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery('')}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
+        </div>
 
-      {/* Filter Tabs (All / Expenses / Income) */}
-      <div className="flex items-center gap-2">
-        <button
-          onClick={() => setTypeFilter('all')}
-          className={`flex-1 py-1.5 rounded-xl text-xs font-bold transition-all ${
-            typeFilter === 'all'
-              ? 'bg-[#00E55F] text-[#062012] shadow-2xs'
-              : 'bg-[#3F3F46] text-[#A1A1AA] hover:bg-[rgba(0,229,95,0.12)]'
-          }`}
-        >
-          All
-        </button>
-        <button
-          onClick={() => setTypeFilter('expense')}
-          className={`flex-1 py-1.5 rounded-xl text-xs font-bold transition-all ${
-            typeFilter === 'expense'
-              ? 'bg-[#FF6B57] text-white shadow-2xs'
-              : 'bg-[#3F3F46] text-[#A1A1AA] hover:bg-[rgba(255,107,87,0.12)]'
-          }`}
-        >
-          Expenses Only
-        </button>
-        <button
-          onClick={() => setTypeFilter('income')}
-          className={`flex-1 py-1.5 rounded-xl text-xs font-bold transition-all ${
-            typeFilter === 'income'
-              ? 'bg-[#00E55F] text-[#062012] shadow-2xs'
-              : 'bg-[#3F3F46] text-[#A1A1AA] hover:bg-[rgba(0,229,95,0.12)]'
-          }`}
-        >
-          Income Only
-        </button>
-      </div>
+        {/* Filter Row */}
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          {/* Type Filter Buttons */}
+          <div className="flex items-center gap-1.5 bg-[#0E0F15] p-1 rounded-xl border border-white/[0.08]">
+            <button
+              onClick={() => setTypeFilter('all')}
+              className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all ${
+                typeFilter === 'all'
+                  ? 'bg-emerald-500 text-[#041E11] shadow-sm'
+                  : 'text-zinc-400 hover:text-white'
+              }`}
+            >
+              All
+            </button>
+            <button
+              onClick={() => setTypeFilter('expense')}
+              className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all ${
+                typeFilter === 'expense'
+                  ? 'bg-rose-500 text-white shadow-sm'
+                  : 'text-zinc-400 hover:text-white'
+              }`}
+            >
+              Expenses
+            </button>
+            <button
+              onClick={() => setTypeFilter('income')}
+              className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all ${
+                typeFilter === 'income'
+                  ? 'bg-emerald-500 text-[#041E11] shadow-sm'
+                  : 'text-zinc-400 hover:text-white'
+              }`}
+            >
+              Income
+            </button>
+          </div>
 
-      {/* Category Chips Scroller */}
-      <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1 touch-action-pan-x">
-        <button
-          onClick={() => setSelectedCatFilter(null)}
-          className={`px-3 py-1 rounded-full text-[11px] font-semibold whitespace-nowrap transition-all ${
-            selectedCatFilter === null
-              ? 'bg-[#00E55F] text-[#062012]'
-              : 'bg-[#27272A] border border-[rgba(255,255,255,0.08)] text-[#A1A1AA] hover:bg-[#3F3F46]'
-          }`}
-        >
-          All Categories
-        </button>
-        {categories.map((cat) => (
+          {/* Quick Summary Pill */}
+          <div className="flex items-center gap-3 text-xs font-mono-nums">
+            <span className="text-emerald-400 font-semibold">
+              +৳{totalFilteredIncome.toLocaleString('en-BD')} In
+            </span>
+            <span className="text-rose-400 font-semibold">
+              -৳{totalFilteredExpense.toLocaleString('en-BD')} Out
+            </span>
+          </div>
+        </div>
+
+        {/* Category Chips Carousel */}
+        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
           <button
-            key={cat.id}
-            onClick={() =>
-              setSelectedCatFilter(selectedCatFilter === cat.id ? null : cat.id)
-            }
-            className={`px-2.5 py-1 rounded-full text-[11px] font-medium whitespace-nowrap transition-all flex items-center gap-1 ${
-              selectedCatFilter === cat.id
-                ? 'bg-[#00E55F] text-[#062012]'
-                : 'bg-[#27272A] border border-[rgba(255,255,255,0.08)] text-[#A1A1AA] hover:bg-[#3F3F46]'
+            onClick={() => setSelectedCatFilter(null)}
+            className={`px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+              selectedCatFilter === null
+                ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
+                : 'bento-inner-box text-zinc-400 hover:text-white'
             }`}
           >
-            <CategoryIcon name={cat.icon} className="w-3.5 h-3.5" />
-            <span>{cat.name}</span>
+            All Categories
           </button>
-        ))}
+          {categories.map((cat) => (
+            <button
+              key={cat.id}
+              onClick={() =>
+                setSelectedCatFilter(selectedCatFilter === cat.id ? null : cat.id)
+              }
+              className={`px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap transition-all flex items-center gap-1.5 ${
+                selectedCatFilter === cat.id
+                  ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
+                  : 'bento-inner-box text-zinc-400 hover:text-white'
+              }`}
+            >
+              <span className="w-2 h-2 rounded-full" style={{ backgroundColor: cat.color }} />
+              <span>{cat.name}</span>
+            </button>
+          ))}
+        </div>
       </div>
 
-      {/* Summary Row */}
-      <div className="bg-[#09090B] p-3 rounded-xl border border-[rgba(255,255,255,0.06)] flex justify-between items-center text-xs">
-        <div className="flex items-center gap-1.5 text-[#00E55F] font-bold">
-          <ArrowDownLeft className="w-3.5 h-3.5" />
-          <span>Income: ৳{totalFilteredIncome.toLocaleString('en-BD')}</span>
-        </div>
-        <div className="flex items-center gap-1.5 text-[#FF6B57] font-bold">
-          <ArrowUpRight className="w-3.5 h-3.5" />
-          <span>Expense: ৳{totalFilteredExpense.toLocaleString('en-BD')}</span>
-        </div>
-      </div>
-
-      {/* Transaction List */}
+      {/* Transaction List Cards */}
       {filteredTxns.length === 0 ? (
-        <div className="py-12 bg-[#27272A] rounded-2xl border border-[rgba(255,255,255,0.08)] p-6 text-center text-xs flex flex-col items-center gap-2">
-          <Receipt className="w-8 h-8 text-[#71717A]" />
-          <p className="font-bold text-[#FFFFFF]">No matching transactions found.</p>
-          <p className="text-[11px] text-[#A1A1AA]">
-            Try resetting your filters or add a new transaction.
+        <div className="py-16 bento-card p-6 text-center text-xs flex flex-col items-center gap-2 bg-[#12131A]">
+          <Receipt className="w-9 h-9 text-zinc-600" />
+          <p className="text-white font-bold text-sm">No matching transactions found</p>
+          <p className="text-zinc-400 text-xs max-w-sm">
+            Try adjusting your search criteria or filter tags to find what you're looking for.
           </p>
         </div>
       ) : (
@@ -195,46 +257,46 @@ export const TransactionsTab: React.FC<TransactionsTabProps> = ({
             return (
               <div
                 key={tx.id}
-                className="p-3 bg-[#27272A] rounded-2xl border border-[rgba(255,255,255,0.08)] shadow-2xs flex items-center justify-between text-xs hover:border-[#00E55F]/40 transition-all"
+                className="p-3.5 bento-card hover:border-white/[0.18] transition-all flex items-center justify-between text-xs bg-[#12131A]"
               >
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3.5 truncate pr-2">
                   <div
                     className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
                     style={{
-                      backgroundColor: catObj ? `${catObj.color}20` : '#00E55F20',
-                      color: catObj ? catObj.color : '#00E55F',
+                      backgroundColor: catObj ? `${catObj.color}20` : isExpense ? '#F43F5E20' : '#10B98120',
+                      color: catObj ? catObj.color : isExpense ? '#F43F5E' : '#10B981',
                     }}
                   >
                     {catObj ? (
-                      <CategoryIcon name={catObj.icon} className="w-4.5 h-4.5" />
+                      <CategoryIcon name={catObj.icon} className="w-5 h-5" />
                     ) : isExpense ? (
-                      <Receipt className="w-4.5 h-4.5" />
+                      <ArrowUpRight className="w-5 h-5 stroke-[2.5]" />
                     ) : (
-                      <Wallet className="w-4.5 h-4.5" />
+                      <ArrowDownLeft className="w-5 h-5 stroke-[2.5]" />
                     )}
                   </div>
 
-                  <div className="flex flex-col">
-                    <span className="font-bold text-[#FFFFFF] text-sm">
+                  <div className="flex flex-col truncate">
+                    <span className="font-bold text-white text-sm truncate">
                       {tx.desc}
                     </span>
-                    <div className="flex items-center gap-2 text-[10px] text-[#71717A] mt-0.5">
+                    <div className="flex items-center gap-2 text-[11px] text-zinc-400 font-mono-nums mt-0.5">
                       <span>{tx.date}</span>
                       {tx.source && <span>• {tx.source}</span>}
                       {catObj && <span>• {catObj.name}</span>}
                     </div>
                     {tx.note && (
-                      <span className="text-[10px] text-[#A1A1AA] italic mt-0.5">
+                      <span className="text-[11px] text-zinc-400 italic mt-0.5 truncate">
                         "{tx.note}"
                       </span>
                     )}
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-4 shrink-0">
                   <span
-                    className={`font-bold font-serif-display text-sm tabular-nums ${
-                      isExpense ? 'text-[#FF6B57]' : 'text-[#00E55F]'
+                    className={`font-extrabold font-mono-nums text-sm sm:text-base ${
+                      isExpense ? 'text-rose-400' : 'text-emerald-400'
                     }`}
                   >
                     {isExpense ? '-' : '+'}৳{tx.amount.toLocaleString('en-BD')}
@@ -242,8 +304,8 @@ export const TransactionsTab: React.FC<TransactionsTabProps> = ({
 
                   <button
                     onClick={() => handleDelete(tx.id, tx.desc)}
-                    className="p-1.5 rounded-lg text-[#71717A] hover:text-[#FF6B57] hover:bg-[rgba(255,107,87,0.12)] active:scale-95 transition-all"
-                    title="Delete entry"
+                    className="p-2 rounded-xl text-zinc-400 hover:text-rose-400 hover:bg-rose-500/15 transition-all"
+                    title="Delete transaction"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>

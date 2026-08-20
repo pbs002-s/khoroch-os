@@ -1,7 +1,7 @@
 import React from 'react';
-import { Home, Zap, Receipt, Bot, Settings } from 'lucide-react';
+import { LayoutGrid, Flame, Heart, Receipt, Bot, Settings } from 'lucide-react';
 
-export type NavTab = 'home' | 'tools' | 'txns' | 'ai' | 'settings';
+export type NavTab = 'home' | 'cgrt' | 'romance' | 'txns' | 'ai' | 'settings';
 
 interface BottomNavProps {
   activeTab: NavTab;
@@ -15,15 +15,16 @@ export const BottomNav: React.FC<BottomNavProps> = ({
   unreadAiBadge,
 }) => {
   const navItems = [
-    { id: 'home' as NavTab, label: 'Home', icon: Home },
-    { id: 'tools' as NavTab, label: 'Tools', icon: Zap },
-    { id: 'txns' as NavTab, label: 'History', icon: Receipt },
-    { id: 'ai' as NavTab, label: 'Finance AI', icon: Bot, badge: unreadAiBadge },
+    { id: 'home' as NavTab, label: 'Overview', icon: LayoutGrid },
+    { id: 'cgrt' as NavTab, label: 'Essentials', icon: Flame },
+    { id: 'romance' as NavTab, label: 'Romance', icon: Heart },
+    { id: 'txns' as NavTab, label: 'Ledger', icon: Receipt },
+    { id: 'ai' as NavTab, label: 'Advisor', icon: Bot, badge: unreadAiBadge },
     { id: 'settings' as NavTab, label: 'Settings', icon: Settings },
   ];
 
   return (
-    <nav className="sticky bottom-0 z-40 bg-[#27272A] border-t border-[rgba(255,255,255,0.08)] shadow-lg px-2 py-1.5 flex items-center justify-around select-none pb-safe">
+    <nav className="sticky bottom-0 z-40 bg-[#0F1016]/95 backdrop-blur-xl border-t border-white/[0.08] shadow-2xl px-2 py-2 flex items-center justify-around select-none">
       {navItems.map((item) => {
         const Icon = item.icon;
         const isActive = activeTab === item.id;
@@ -32,25 +33,24 @@ export const BottomNav: React.FC<BottomNavProps> = ({
           <button
             key={item.id}
             onClick={() => onTabChange(item.id)}
-            className={`flex flex-col items-center justify-center py-1 px-3 rounded-2xl transition-all relative ${
+            className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition-all relative ${
               isActive
-                ? 'text-[#00E55F] font-bold scale-105'
-                : 'text-[#A1A1AA] font-medium hover:text-[#FFFFFF]'
+                ? 'text-emerald-400 font-bold'
+                : 'text-zinc-400 font-medium hover:text-white'
             }`}
           >
-            {/* Active Pill Indicator */}
             {isActive && (
-              <span className="absolute inset-0 bg-[rgba(0,229,95,0.12)] rounded-2xl -z-10 animate-slide-in" />
+              <span className="absolute inset-0 bg-emerald-500/15 rounded-xl border border-emerald-500/30 -z-10 animate-slide-in" />
             )}
 
             <div className="relative">
-              <Icon className={`w-5 h-5 ${isActive ? 'stroke-[2.5]' : 'stroke-2'}`} />
+              <Icon className={`w-5 h-5 ${isActive ? 'stroke-[2.4] text-emerald-400' : 'stroke-[1.8]'}`} />
               {item.badge && (
-                <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[#FF6B57] rounded-full ring-2 ring-[#27272A] animate-pulse" />
+                <span className="absolute -top-1 -right-1 w-2 h-2 bg-rose-500 rounded-full ring-2 ring-[#0F1016] animate-pulse" />
               )}
             </div>
 
-            <span className="text-[10px] tracking-wide mt-1 font-mono-label uppercase">
+            <span className="text-[10px] tracking-tight mt-1 font-mono-nums">
               {item.label}
             </span>
           </button>

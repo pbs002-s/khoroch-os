@@ -1,27 +1,45 @@
 import React, { useState } from 'react';
 import { Transaction } from '../types';
 import { ESSENTIAL_PRESETS, PARTNER_PRESETS } from '../constants/categories';
-import { Cigarette, Heart, Dices, Plus, Sparkles } from 'lucide-react';
+import { 
+  Heart, 
+  Dices, 
+  Plus, 
+  Sparkles, 
+  Coffee, 
+  Flame, 
+  UtensilsCrossed, 
+  Zap, 
+  Smile, 
+  PartyPopper,
+  ShieldCheck,
+  ShoppingBag
+} from 'lucide-react';
 import { CategoryIcon } from '../constants/icons';
+import { CigaretteSmartSuggestion } from './CigaretteSmartSuggestion';
 
 interface ToolsTabProps {
   onAddTransaction: (tx: Omit<Transaction, 'id'>) => void;
   onShowToast: (msg: string) => void;
   transactions: Transaction[];
+  monthlyBudgetLimit?: number;
 }
 
 export const ToolsTab: React.FC<ToolsTabProps> = ({
   onAddTransaction,
   onShowToast,
   transactions,
+  monthlyBudgetLimit = 20000,
 }) => {
-  // Tool 1: Daily Limit state
-  const [essentialDailyBudget, setEssentialDailyBudget] = useState(150);
-
-  // Tool 3: Gaming & Activity State
+  // Activity / Gaming State
   const [gamingAmount, setGamingAmount] = useState<number | ''>('');
   const [gamingType, setGamingType] = useState<'profit' | 'loss'>('loss');
   const [gamingNote, setGamingNote] = useState('');
+
+  // Calculate Partner total spend
+  const partnerSpend = transactions
+    .filter((t) => t.type === 'expense' && t.category === 'partner')
+    .reduce((acc, t) => acc + t.amount, 0);
 
   // Calculate Net Gaming
   const gamingTransactions = transactions.filter(
@@ -34,30 +52,44 @@ export const ToolsTab: React.FC<ToolsTabProps> = ({
   const gamingNet = gamingProfits - gamingLosses;
 
   // Handle Preset Quick Add
-  const handleAddPreset = (name: string, price: number, catId: string) => {
+  const handleAddPreset = (name: string, price: number, catId: string, note?: string) => {
     onAddTransaction({
       type: 'expense',
       desc: name,
       category: catId,
       amount: price,
       date: new Date().toISOString().split('T')[0],
-      note: 'Quick preset entry',
+      note: note || 'Quick romantic/social preset entry',
     });
-    onShowToast(`Added ${name} (৳${price})`);
+    onShowToast(`Logged: ${name} (৳${price}) 💕`);
   };
 
-  // Handle Date Night Bundle
-  const handleAddDateBundle = () => {
-    const bundleAmount = 180 + 850 + 450; // ৳1480
+  // Handle Emergency Patch-up Bundle
+  const handleAddPatchUpBundle = () => {
+    const bundleAmount = 380 + 850 + 250; // ৳1480
     onAddTransaction({
       type: 'expense',
-      desc: 'Date Night Bundle (Ice Cream + Dinner + Hangout)',
+      desc: 'The "I Messed Up / Peace Treaty" Deluxe Date',
       category: 'partner',
       amount: bundleAmount,
       date: new Date().toISOString().split('T')[0],
-      note: 'Combined date night package',
+      note: 'Emergency Date: Boba (৳380) + Dinner (৳850) + Beli Phul (৳250) = 100% Peace Restored',
     });
-    onShowToast(`Date Night Bundle logged (৳${bundleAmount})`);
+    onShowToast(`"I Messed Up" Deluxe Peace Treaty logged (৳${bundleAmount}) 💕`);
+  };
+
+  // Handle Rainy Dhanmondi Romance Bundle
+  const handleAddRainyRomanceBundle = () => {
+    const bundleAmount = 280 + 160 + 110 + 30; // ৳580
+    onAddTransaction({
+      type: 'expense',
+      desc: 'Rainy Day Dhanmondi Hood-Down Romance',
+      category: 'partner',
+      amount: bundleAmount,
+      date: new Date().toISOString().split('T')[0],
+      note: 'Rickshaw (৳280) + Lake Fuska (৳160) + Beli Phul (৳110) + Tea (৳30)',
+    });
+    onShowToast(`Rainy Dhanmondi Romance logged (৳${bundleAmount}) 🌧️💕`);
   };
 
   // Handle Gaming Entry
@@ -92,132 +124,180 @@ export const ToolsTab: React.FC<ToolsTabProps> = ({
   };
 
   return (
-    <div className="flex-1 w-full max-w-4xl mx-auto p-4 md:p-6 flex flex-col gap-5 pb-24">
+    <div className="w-full flex flex-col gap-6 pb-24 animate-slide-in">
       {/* Title Header */}
       <div className="flex flex-col gap-1">
-        <h2 className="text-lg font-bold text-[#FFFFFF]">
-          Quick Logging Tools
+        <h2 className="text-xl font-bold text-white font-display">
+          Quick Logging & Smart Presets
         </h2>
-        <p className="text-xs text-[#A1A1AA]">
-          Fast one-tap logging for daily essentials, outings, and activity entries.
+        <p className="text-xs text-zinc-400">
+          Fast 1-tap logging for daily essentials, cigarette budget matchers, romantic dates, and recreation entries.
         </p>
       </div>
 
-      {/* Tool 1: Cigarette & Daily Essentials Budget */}
-      <div className="bg-[#27272A] p-4.5 rounded-2xl border border-[rgba(255,255,255,0.08)] shadow-2xs flex flex-col gap-3">
-        <div className="flex items-center justify-between border-b border-[rgba(255,255,255,0.06)] pb-2.5">
-          <span className="text-sm font-bold text-[#FFFFFF] flex items-center gap-2">
-            <Cigarette className="w-4 h-4 text-[#52525B]" />
-            Cigarettes & Daily Essentials
-          </span>
-          <span className="text-[10px] font-mono-label uppercase bg-[#3F3F46] text-[#A1A1AA] px-2 py-0.5 rounded-full">
-            1-Tap Add
-          </span>
-        </div>
+      {/* 1. Full Cigarette & Daily Essentials Smart Suggestion & Budget Allocator */}
+      <div className="animate-fade-in-up stagger-1">
+        <CigaretteSmartSuggestion
+          onAddTransaction={onAddTransaction}
+          onShowToast={onShowToast}
+          monthlyBudgetLimit={monthlyBudgetLimit}
+          transactions={transactions}
+        />
+      </div>
 
-        <div className="flex items-center justify-between text-xs text-[#A1A1AA] bg-[#09090B] p-2.5 rounded-xl border border-[rgba(255,255,255,0.06)]">
-          <span>Target Daily Limit:</span>
-          <div className="flex items-center gap-1">
-            <input
-              type="number"
-              value={essentialDailyBudget}
-              onChange={(e) => setEssentialDailyBudget(Number(e.target.value))}
-              className="w-16 px-2 py-1 text-xs font-bold rounded border border-[rgba(255,255,255,0.13)] bg-[#27272A] text-right"
-            />
-            <span className="font-bold text-[#00E55F]">৳/day</span>
+      {/* 2. Partner & Social Outings (Romantic, Funny & Witty) */}
+      <div className="bento-card p-5 sm:p-6 flex flex-col gap-4.5 bg-[#12131A] animate-fade-in-up stagger-2 relative overflow-hidden">
+        {/* Subtle romantic ambient pink glow */}
+        <div className="absolute top-0 right-0 w-80 h-80 bg-rose-500/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />
+
+        {/* Section Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/[0.06] pb-3.5 relative z-10">
+          <div className="flex items-center gap-2.5">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-rose-500 to-pink-600 flex items-center justify-center shadow-lg shadow-rose-500/20 text-white">
+              <Heart className="w-5 h-5 fill-white" />
+            </div>
+            <div className="flex flex-col">
+              <div className="flex items-center gap-2">
+                <span className="text-base font-bold text-white font-display">
+                  Partner & Social Romance Tracker
+                </span>
+                <span className="px-2 py-0.5 rounded-full text-[9px] font-mono-nums font-bold bg-rose-500/15 text-rose-300 border border-rose-500/30">
+                  Simp Score: 100% 💕
+                </span>
+              </div>
+              <span className="text-xs text-zinc-400">
+                The calculated financial cost of being deeply in love (and keeping peace) in Dhaka
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 text-xs font-mono-nums self-start sm:self-auto">
+            <span className="text-zinc-400">Month Love Spend:</span>
+            <span className="font-extrabold text-rose-400">
+              ৳{partnerSpend.toLocaleString('en-BD')}
+            </span>
           </div>
         </div>
 
-        {/* Preset Items */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-1">
-          {ESSENTIAL_PRESETS.map((item) => (
-            <div
-              key={item.id}
-              className="flex items-center justify-between p-2.5 rounded-xl bg-[#09090B] hover:bg-[#3F3F46] text-xs transition-colors"
-            >
-              <span className="font-medium text-[#FFFFFF]">{item.name}</span>
-              <div className="flex items-center gap-2">
-                <span className="text-[#A1A1AA] font-bold">৳{item.price}</span>
-                <button
-                  onClick={() => handleAddPreset(item.name, item.price, item.category)}
-                  className="px-2.5 py-1 rounded-lg bg-[#00E55F] text-[#062012] text-[11px] font-bold hover:bg-[#00E55F]/90 active:scale-95 transition-all shadow-2xs"
-                >
-                  + Add
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Suggested Combo Box */}
-        <div className="bg-[rgba(0,229,95,0.12)] border border-[#008A39] p-3 rounded-xl text-xs text-[#00E55F] flex items-center justify-between mt-1">
-          <span className="font-semibold">Suggested Daily Combo:</span>
-          <span className="font-bold">1 Stick (৳23) + Milk Tea (৳15) = ৳38</span>
-        </div>
-      </div>
-
-      {/* Tool 2: Partner & Outings Expenses */}
-      <div className="bg-[#27272A] p-4.5 rounded-2xl border border-[rgba(255,255,255,0.08)] shadow-2xs flex flex-col gap-3">
-        <div className="flex items-center justify-between border-b border-[rgba(255,255,255,0.06)] pb-2.5">
-          <span className="text-sm font-bold text-[#FFFFFF] flex items-center gap-2">
-            <Heart className="w-4 h-4 text-[#E85D8A]" />
-            Partner & Outings Expenses
-          </span>
-          <span className="text-[10px] font-mono-label uppercase bg-[rgba(255,107,87,0.12)] text-[#FF6B57] px-2 py-0.5 rounded-full">
-            Treats
-          </span>
-        </div>
-
-        {/* Presets Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        {/* Funny Romance Presets Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 relative z-10">
           {PARTNER_PRESETS.map((preset) => (
             <div
               key={preset.id}
-              className="flex items-center justify-between p-2.5 rounded-xl bg-[#09090B] hover:bg-[#3F3F46] text-xs transition-colors"
+              className="bento-inner-box p-3.5 rounded-xl hover:border-rose-500/40 transition-all flex flex-col justify-between gap-2.5 bg-[#111219] group"
             >
-              <span className="font-medium text-[#FFFFFF] flex items-center gap-1.5">
-                <CategoryIcon name={preset.icon} className="w-3.5 h-3.5 text-[#E85D8A]" />
-                <span>{preset.name}</span>
-              </span>
-              <div className="flex items-center gap-2">
-                <span className="text-[#A1A1AA] font-bold">৳{preset.price}</span>
-                <button
-                  onClick={() => handleAddPreset(preset.name, preset.price, 'partner')}
-                  className="px-2.5 py-1 rounded-lg bg-[#E85D8A] text-white text-[11px] font-bold hover:bg-[#E85D8A]/90 active:scale-95 transition-all shadow-2xs"
-                >
-                  + Add
-                </button>
+              <div className="flex flex-col gap-1.5">
+                <div className="flex items-center justify-between">
+                  <div className="w-7 h-7 rounded-lg bg-rose-500/15 text-rose-400 flex items-center justify-center">
+                    <CategoryIcon name={preset.icon} className="w-4 h-4" />
+                  </div>
+                  <span className="text-xs font-extrabold text-rose-400 font-mono-nums">
+                    ৳{preset.price}
+                  </span>
+                </div>
+
+                <span className="font-bold text-white text-xs leading-snug line-clamp-1 group-hover:text-rose-300 transition-colors">
+                  {preset.name}
+                </span>
+
+                {preset.tagline && (
+                  <span className="text-[10px] text-zinc-400 italic line-clamp-2 leading-relaxed">
+                    "{preset.tagline}"
+                  </span>
+                )}
               </div>
+
+              <button
+                onClick={() => handleAddPreset(preset.name, preset.price, 'partner', preset.tagline)}
+                className="w-full py-1.5 rounded-lg bg-rose-500/15 text-rose-300 border border-rose-500/30 hover:bg-rose-500 hover:text-white text-[11px] font-bold transition-all flex items-center justify-center gap-1 active:scale-95 shadow-sm mt-1"
+              >
+                <Plus className="w-3.5 h-3.5" />
+                <span>Log This Date</span>
+              </button>
             </div>
           ))}
         </div>
 
-        {/* Date Night Bundle Button */}
-        <button
-          onClick={handleAddDateBundle}
-          className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#E85D8A] to-[#FF6B57] text-white text-xs font-bold shadow-xs hover:opacity-95 active:scale-98 transition-all flex items-center justify-center gap-2 mt-1"
-        >
-          <Heart className="w-4 h-4 fill-white" />
-          <span>+ Add Date Night Bundle (Ice Cream + Dinner + Hangout = ৳1,480)</span>
-        </button>
+        {/* Emergency Romantic Bundles */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 relative z-10">
+          {/* Bundle 1: "I Messed Up / Peace Treaty" Deluxe */}
+          <div className="bento-inner-box p-4 border border-rose-500/30 bg-rose-500/5 rounded-xl flex flex-col justify-between gap-3">
+            <div className="flex flex-col gap-1">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-rose-300 flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-rose-400" />
+                  <span>The "I Messed Up / Peace Treaty" Deluxe</span>
+                </span>
+                <span className="text-xs font-extrabold text-rose-400 font-mono-nums">৳1,480</span>
+              </div>
+              <p className="text-[11px] text-zinc-400">
+                Boba Drink (৳380) + Aesthetic Dinner (৳850) + Beli Phul (৳250) = 100% Guaranteed Peace & Forgiveness.
+              </p>
+            </div>
+
+            <button
+              onClick={handleAddPatchUpBundle}
+              className="w-full py-2.5 rounded-xl bg-gradient-to-r from-rose-500 to-pink-600 text-white text-xs font-bold shadow-md hover:opacity-95 active:scale-98 transition-all flex items-center justify-center gap-1.5"
+            >
+              <Heart className="w-4 h-4 fill-white" />
+              <span>+ Log Emergency Peace Treaty (৳1,480)</span>
+            </button>
+          </div>
+
+          {/* Bundle 2: Rainy Day Dhanmondi Hood-Down Rickshaw Romance */}
+          <div className="bento-inner-box p-4 border border-sky-500/30 bg-sky-500/5 rounded-xl flex flex-col justify-between gap-3">
+            <div className="flex flex-col gap-1">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-sky-300 flex items-center gap-1.5">
+                  <Smile className="w-3.5 h-3.5 text-sky-400" />
+                  <span>Rainy Day Dhanmondi Hood-Down Romance</span>
+                </span>
+                <span className="text-xs font-extrabold text-sky-400 font-mono-nums">৳580</span>
+              </div>
+              <p className="text-[11px] text-zinc-400">
+                Hood-down Rickshaw (৳280) + Lake Fuska (৳160) + Beli Phul (৳110) + 2x Hot Milk Tea (৳30).
+              </p>
+            </div>
+
+            <button
+              onClick={handleAddRainyRomanceBundle}
+              className="w-full py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 text-white text-xs font-bold shadow-md hover:opacity-95 active:scale-98 transition-all flex items-center justify-center gap-1.5"
+            >
+              <PartyPopper className="w-4 h-4" />
+              <span>+ Log Rainy Dhanmondi Romance (৳580)</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Witty Relationship Financial Advice Footer */}
+        <div className="bento-inner-box p-3 text-[11px] text-zinc-300 border border-white/[0.08] flex items-center gap-2 bg-[#0E0F15] rounded-xl relative z-10">
+          <span className="text-rose-400 text-sm">💡</span>
+          <span>
+            <strong className="text-white">Romance ROI Formula:</strong> A ৳250 Beli Phul bouquet today prevents a ৳2,500 anger-induced fancy restaurant dinner next week. Financial literacy at its finest!
+          </span>
+        </div>
       </div>
 
-      {/* Tool 3: Activity & Gaming Tracker */}
-      <div className="bg-[#27272A] p-4.5 rounded-2xl border border-[rgba(255,255,255,0.08)] shadow-2xs flex flex-col gap-3">
-        <div className="flex items-center justify-between border-b border-[rgba(255,255,255,0.06)] pb-2.5">
-          <span className="text-sm font-bold text-[#FFFFFF] flex items-center gap-2">
-            <Dices className="w-4 h-4 text-[#3B9EFF]" />
-            Activity & Gaming P/L Tracker
-          </span>
-          <span className="text-[10px] font-mono-label uppercase bg-[rgba(139,127,245,0.12)] text-[#8B7FF5] px-2 py-0.5 rounded-full">
-            Profit/Loss
+      {/* 3. Activity & Gaming P/L Tracker */}
+      <div className="bento-card p-5 sm:p-6 flex flex-col gap-4 bg-[#12131A] animate-fade-in-up stagger-3">
+        <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-xl bg-indigo-500/15 text-indigo-400 flex items-center justify-center">
+              <Dices className="w-4 h-4" />
+            </div>
+            <span className="text-sm font-bold text-white font-display">
+              Activity, Sports & Recreation P/L Tracker
+            </span>
+          </div>
+          <span className="text-[10px] font-mono-nums font-semibold bg-indigo-500/15 text-indigo-400 border border-indigo-500/30 px-2 py-0.5 rounded-full">
+            P/L Tracker
           </span>
         </div>
 
         <form onSubmit={handleAddGamingEntry} className="flex flex-col gap-3">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="text-[10px] font-mono-label text-[#71717A] uppercase block mb-1">
+              <label className="text-[10px] font-mono-nums text-zinc-400 uppercase tracking-wider block mb-1">
                 Amount (৳)
               </label>
               <input
@@ -225,19 +305,19 @@ export const ToolsTab: React.FC<ToolsTabProps> = ({
                 placeholder="e.g. 500"
                 value={gamingAmount}
                 onChange={(e) => setGamingAmount(e.target.value ? Number(e.target.value) : '')}
-                className="w-full px-3 py-2 text-xs rounded-xl border border-[rgba(255,255,255,0.13)] bg-[#09090B] focus:outline-none focus:border-[#3B9EFF]"
+                className="w-full px-3 py-2 text-xs rounded-xl border border-white/[0.12] bg-[#0E0F15] text-white focus:outline-none focus:border-indigo-500 font-mono-nums"
                 required
               />
             </div>
 
             <div>
-              <label className="text-[10px] font-mono-label text-[#71717A] uppercase block mb-1">
+              <label className="text-[10px] font-mono-nums text-zinc-400 uppercase tracking-wider block mb-1">
                 Entry Type
               </label>
               <select
                 value={gamingType}
                 onChange={(e) => setGamingType(e.target.value as 'profit' | 'loss')}
-                className="w-full px-3 py-2 text-xs rounded-xl border border-[rgba(255,255,255,0.13)] bg-[#09090B] focus:outline-none focus:border-[#3B9EFF]"
+                className="w-full px-3 py-2 text-xs rounded-xl border border-white/[0.12] bg-[#0E0F15] text-white focus:outline-none focus:border-indigo-500 cursor-pointer"
               >
                 <option value="loss">Loss Entry (-Expense)</option>
                 <option value="profit">Win / Profit (+Income)</option>
@@ -246,32 +326,34 @@ export const ToolsTab: React.FC<ToolsTabProps> = ({
           </div>
 
           <div>
-            <label className="text-[10px] font-mono-label text-[#71717A] uppercase block mb-1">
-              Note / Event Name
+            <label className="text-[10px] font-mono-nums text-zinc-400 uppercase tracking-wider block mb-1">
+              Event / Match Name
             </label>
             <input
               type="text"
-              placeholder="e.g. Turf tournament match or FIFA series"
+              placeholder="e.g. Turf football match share or tournament"
               value={gamingNote}
               onChange={(e) => setGamingNote(e.target.value)}
-              className="w-full px-3 py-2 text-xs rounded-xl border border-[rgba(255,255,255,0.13)] bg-[#09090B] focus:outline-none focus:border-[#3B9EFF]"
+              className="w-full px-3 py-2 text-xs rounded-xl border border-white/[0.12] bg-[#0E0F15] text-white focus:outline-none focus:border-indigo-500"
             />
           </div>
 
-          <button
-            type="submit"
-            className="w-full py-2.5 rounded-xl bg-gradient-to-r from-[#3B9EFF] to-[#4C8DFF] text-white text-xs font-bold hover:opacity-95 active:scale-98 transition-all shadow-xs"
-          >
-            Submit Activity Entry
-          </button>
-        </form>
+          <div className="flex items-center justify-between pt-2">
+            <div className="bento-inner-box px-3 py-2 text-xs flex items-center gap-2 text-zinc-400">
+              <span>Net Result:</span>
+              <span className={`font-bold font-mono-nums ${gamingNet >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+                {gamingNet >= 0 ? `+৳${gamingNet.toLocaleString('en-BD')}` : `-৳${Math.abs(gamingNet).toLocaleString('en-BD')}`}
+              </span>
+            </div>
 
-        <div className="bg-[#3F3F46] p-3 rounded-xl text-xs flex justify-between items-center text-[#A1A1AA]">
-          <span>Month Activity Net Result:</span>
-          <span className={`font-bold ${gamingNet >= 0 ? 'text-[#00E55F]' : 'text-[#FF6B57]'}`}>
-            {gamingNet >= 0 ? `+৳${gamingNet}` : `-৳${Math.abs(gamingNet)}`}
-          </span>
-        </div>
+            <button
+              type="submit"
+              className="px-5 py-2.5 rounded-xl bg-indigo-600 text-white text-xs font-bold hover:bg-indigo-500 active:scale-98 transition-all shadow-md shadow-indigo-600/20"
+            >
+              Submit Entry
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );

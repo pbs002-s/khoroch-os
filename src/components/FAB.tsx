@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Minus, ArrowUpRight, ArrowDownLeft } from 'lucide-react';
+import { Plus, X, ArrowUpRight, ArrowDownLeft } from 'lucide-react';
 
 interface FABProps {
   onOpenExpenseModal: () => void;
@@ -13,7 +13,7 @@ export const FAB: React.FC<FABProps> = ({
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="fixed bottom-20 right-4 z-40 flex flex-col items-end gap-2.5">
+    <div className="md:hidden fixed bottom-20 right-4 z-40 flex flex-col items-end gap-2.5">
       {/* Quick Menu items */}
       {isOpen && (
         <div className="flex flex-col items-end gap-2 animate-slide-in">
@@ -23,11 +23,11 @@ export const FAB: React.FC<FABProps> = ({
               setIsOpen(false);
               onOpenIncomeModal();
             }}
-            className="flex items-center gap-2 px-3.5 py-2 rounded-full bg-[#00E55F] text-[#062012] text-xs font-bold shadow-md hover:bg-[#00E55F]/90 active:scale-95 transition-all"
+            className="flex items-center gap-2 px-3.5 py-2 rounded-full bg-emerald-500 text-[#041E11] text-xs font-bold shadow-xl hover:bg-emerald-400 active:scale-95 transition-all"
           >
             <span>+ Add Income</span>
-            <div className="w-6 h-6 rounded-full bg-[#27272A]/20 flex items-center justify-center">
-              <ArrowDownLeft className="w-3.5 h-3.5 text-white" />
+            <div className="w-5 h-5 rounded-full bg-black/15 flex items-center justify-center">
+              <ArrowDownLeft className="w-3.5 h-3.5 stroke-[2.5]" />
             </div>
           </button>
 
@@ -37,11 +37,11 @@ export const FAB: React.FC<FABProps> = ({
               setIsOpen(false);
               onOpenExpenseModal();
             }}
-            className="flex items-center gap-2 px-3.5 py-2 rounded-full bg-[#FF6B57] text-white text-xs font-bold shadow-md hover:bg-[#FF6B57]/90 active:scale-95 transition-all"
+            className="flex items-center gap-2 px-3.5 py-2 rounded-full bg-rose-500 text-white text-xs font-bold shadow-xl hover:bg-rose-400 active:scale-95 transition-all"
           >
-            <span>- Add Expense</span>
-            <div className="w-6 h-6 rounded-full bg-[#27272A]/20 flex items-center justify-center">
-              <ArrowUpRight className="w-3.5 h-3.5 text-white" />
+            <span>- Log Expense</span>
+            <div className="w-5 h-5 rounded-full bg-black/15 flex items-center justify-center">
+              <ArrowUpRight className="w-3.5 h-3.5 stroke-[2.5]" />
             </div>
           </button>
         </div>
@@ -50,12 +50,14 @@ export const FAB: React.FC<FABProps> = ({
       {/* Main Trigger Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`w-13 h-13 rounded-full flex items-center justify-center text-white shadow-lg active:scale-95 transition-all duration-300 ${
-          isOpen ? 'bg-[#3F3F46] rotate-45' : 'bg-gradient-to-tr from-[#00E55F] to-[#4C8DFF]'
+        className={`w-12 h-12 rounded-full flex items-center justify-center shadow-xl active:scale-95 transition-all duration-250 ${
+          isOpen 
+            ? 'bg-zinc-800 text-zinc-300 rotate-90 border border-white/[0.1]' 
+            : 'bg-emerald-500 text-[#041E11] hover:bg-emerald-400 shadow-emerald-500/25'
         }`}
         title="Add Transaction"
       >
-        <Plus className="w-6 h-6 stroke-[2.5]" />
+        {isOpen ? <X className="w-5 h-5" /> : <Plus className="w-6 h-6 stroke-[2.8]" />}
       </button>
     </div>
   );

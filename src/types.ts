@@ -31,6 +31,7 @@ export interface PartnerPreset {
   name: string;
   price: number;
   icon: string;
+  tagline?: string;
 }
 
 export interface GamingEntry {
